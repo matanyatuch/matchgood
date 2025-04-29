@@ -153,42 +153,34 @@
 
   <script>
     (function() {
-      // 1) הגדרות בסיסיות
       const BASE = "https://api.counterapi.dev/v1";
-      const NS   = "matchgood1";  // החליפו ל-namespace שלכם
-      const NAME = "visits";      // החליפו ל-name שלכם
+      const NS   = "matchgood1";  // namespace שלכם
+      const NAME = "visits";      // name שלכם
     
-      // 2) פונקציה לאיתחול / עדכון המונה
       function updateCounter(doIncrement) {
-        // אם doIncrement=true → העלה (+1), אחרת רק קבל את הערך
         const url = doIncrement
           ? `${BASE}/${NS}/${NAME}/up`
           : `${BASE}/${NS}/${NAME}`;
-        
-        console.log("Counter API ▶︎", url);
-        
+        console.log("▶︎ CounterAPI", url);
         fetch(url)
           .then(res => {
-            if (!res.ok) throw new Error("Status " + res.status);
+            if (!res.ok) throw new Error(res.status);
             return res.json();
           })
           .then(json => {
             const el = document.getElementById("counter-value");
             if (el) el.textContent = json.count ?? 0;
           })
-          .catch(err => console.error("Counter API error:", err));
+          .catch(err => console.error("CounterAPI error:", err));
       }
     
-      // 3) סנכרון עם טעינת ה-DOM
       document.addEventListener("DOMContentLoaded", () => {
-        // העלאה ראשונית (up) כדי להוסיף +1 בזמן טעינת העמוד
-        updateCounter(true);
-    
-        // כל 10 שניות רק קבלת הערך הנוכחי (get)
-        setInterval(() => updateCounter(false), 10_000);
+        updateCounter(true);               // +1 ברענון
+        setInterval(() => updateCounter(false), 10000);  // get כל 10 שניות
       });
     })();
     </script>
+    
     
 
 /* ========================================
