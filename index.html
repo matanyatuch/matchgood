@@ -152,39 +152,44 @@
   </div>
 
   <script>
-  /* ========================================
-     1) קאונטר מבקרים  (TODO: החלף yourdomain.com)
-     ======================================== */
-     (function initCounter() {
-  // הגדרות קבועות
-  const API_BASE = "https://api.countapi.xyz";
-  const NAMESPACE = "matchgood1";    // שם פשוט בלי תווים בעייתיים
-  const KEY       = "visits";
-
-  function updateCounter(increment = false) {
-    // בונים תמיד URL תקני: BASE + (hit|get) + namespace + key
-    const action   = increment ? "hit" : "get";
-    const endpoint = `${API_BASE}/${action}/${NAMESPACE}/${KEY}`;
-
-    fetch(endpoint)
-      .then(r => r.json())
-      .then(d => {
-        const el = document.getElementById("counter-value");
-        if (!el) return;        // מוודאים שהאלמנט קיים
-        el.textContent = d.value || 0;
-      })
-      .catch(err => console.error("CountAPI:", err));
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    // העלאה אחת בזמן הטעינה
-    updateCounter(true);
-    // אם תרצה לבדוק בלי לרענן – אפשר להפעיל גם hit במחזור:
-    // setInterval(() => updateCounter(true), 10000);
-    setInterval(() => updateCounter(false), 10000);
-  });
-})();
-
+    (function() {
+      // 1) הגדרות בסיסיות
+      const BASE = "https://api.counterapi.dev/v1";
+      const NS   = "matchgood1";  // החליפו ל-namespace שלכם
+      const NAME = "visits";      // החליפו ל-name שלכם
+    
+      // 2) פונקציה לאיתחול / עדכון המונה
+      function updateCounter(doIncrement) {
+        // אם doIncrement=true → העלה (+1), אחרת רק קבל את הערך
+        const url = doIncrement
+          ? `${BASE}/${NS}/${NAME}/up`
+          : `${BASE}/${NS}/${NAME}`;
+        
+        console.log("Counter API ▶︎", url);
+        
+        fetch(url)
+          .then(res => {
+            if (!res.ok) throw new Error("Status " + res.status);
+            return res.json();
+          })
+          .then(json => {
+            const el = document.getElementById("counter-value");
+            if (el) el.textContent = json.count ?? 0;
+          })
+          .catch(err => console.error("Counter API error:", err));
+      }
+    
+      // 3) סנכרון עם טעינת ה-DOM
+      document.addEventListener("DOMContentLoaded", () => {
+        // העלאה ראשונית (up) כדי להוסיף +1 בזמן טעינת העמוד
+        updateCounter(true);
+    
+        // כל 10 שניות רק קבלת הערך הנוכחי (get)
+        setInterval(() => updateCounter(false), 10_000);
+      });
+    })();
+    </script>
+    
 
 /* ========================================
    2) פונקציות מדיה  (תמונות / סרטונים)
