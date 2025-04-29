@@ -155,19 +155,29 @@
   /* ========================================
      1) קאונטר מבקרים  (TODO: החלף yourdomain.com)
      ======================================== */
-  (function initCounter() {
-    function updateCounter(increment = false) {
-      const endpoint = increment
-        ? "https://api.countapi.xyz/hit/https://gorgeous-cactus-cdd3c3.netlify.app//visits"
-        : "https://api.countapi.xyz/get/https://gorgeous-cactus-cdd3c3.netlify.app//visits";
-      fetch(endpoint)
-        .then(r => r.json())
-        .then(d => { document.getElementById("counter-value").textContent = d.value || 0; })
-        .catch(err => console.error("CountAPI:", err));
-    }
-    updateCounter(true);
-    setInterval(() => updateCounter(false), 10_000);
-  })();
+     <script>
+(function initCounter () {
+  const namespace = "matchgood1.netlify.app";  
+  const key       = "visits";
+
+  function updateCounter (increment = false) {
+    const endpoint = increment
+      ? `https://api.countapi.xyz/hit/${namespace}/${key}`
+      : `https://api.countapi.xyz/get/${namespace}/${key}`;
+
+    fetch(endpoint)
+      .then(r => r.json())
+      .then(d => {
+        document.getElementById("counter-value").textContent = d.value ?? 0;
+      })
+      .catch(console.error);
+  }
+
+  updateCounter(true);                // ספירת ביקור
+  setInterval(updateCounter, 10_000); // רענון כל 10 ש’
+})();
+</script>
+
 
 /* ========================================
    2) פונקציות מדיה  (תמונות / סרטונים)
