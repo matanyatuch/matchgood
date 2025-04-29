@@ -153,33 +153,50 @@
 
   <script>
     (function() {
+      // 1) הגדרות בסיסיות
       const BASE = "https://api.counterapi.dev/v1";
-      const NS   = "matchgood1";  // namespace שלכם
-      const NAME = "visits";      // name שלכם
+      const NS   = "matchgood1";  // החליפו ל־namespace שלכם
+      const NAME = "visits";      // החליפו ל־name שלכם
     
+      // 2) פונקציה לאיתחול ועדכון המונה
       function updateCounter(doIncrement) {
-        const url = doIncrement
-          ? `${BASE}/${NS}/${NAME}/up`
-          : `${BASE}/${NS}/${NAME}`;
-        console.log("▶︎ CounterAPI", url);
-        fetch(url)
+        const endpoint = doIncrement
+          ? `${BASE}/${NS}/${NAME}/up`    // העלאה ב־1
+          : `${BASE}/${NS}/${NAME}`;      // שליפת הערך הנוכחי
+    
+        console.log("▶︎ CounterAPI", endpoint);
+    
+        fetch(endpoint, { cache: "no-store" })  // מבטל cache בדפדפן
           .then(res => {
-            if (!res.ok) throw new Error(res.status);
+            if (!res.ok) throw new Error(`Status ${res.status}`);
             return res.json();
           })
-          .then(json => {
-            const el = document.getElementById("counter-value");
-            if (el) el.textContent = json.count ?? 0;
+          .then(data => {
+            const el   = document.getElementById("counter-value");
+            if (!el) return;
+    
+            const prev  = parseInt(el.textContent, 10) || 0;
+            const next  = data.count ?? 0;
+    
+            // רק נתעדכן אם הערך לא יורד
+            if (next >= prev) {
+              el.textContent = next;
+            }
           })
           .catch(err => console.error("CounterAPI error:", err));
       }
     
+      // 3) חיבור לאירוע טעינת ה־DOM
       document.addEventListener("DOMContentLoaded", () => {
-        updateCounter(true);               // +1 ברענון
-        setInterval(() => updateCounter(false), 1000);  // get כל 10 שניות
+        // העלאה ראשונית (+1) ברענון העמוד
+        updateCounter(true);
+    
+        // קבלת ערך (get) כל 30 שניות
+        setInterval(() => updateCounter(false), 30_000);
       });
     })();
- 
+
+    
     
 /* ========================================
    2) פונקציות מדיה  (תמונות / סרטונים)
