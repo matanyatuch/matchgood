@@ -156,24 +156,32 @@
      1) קאונטר מבקרים  (TODO: החלף yourdomain.com)
      ======================================== */
      (function initCounter() {
+  // הגדרות קבועות
+  const API_BASE = "https://api.countapi.xyz";
+  const NAMESPACE = "matchgood1";    // שם פשוט בלי תווים בעייתיים
+  const KEY       = "visits";
+
   function updateCounter(increment = false) {
-    const endpoint = increment
-      ? "https://api.countapi.xyz/hit/matchgood1/visits"
-      : "https://api.countapi.xyz/get/matchgood1/visits";
+    // בונים תמיד URL תקני: BASE + (hit|get) + namespace + key
+    const action   = increment ? "hit" : "get";
+    const endpoint = `${API_BASE}/${action}/${NAMESPACE}/${KEY}`;
 
     fetch(endpoint)
       .then(r => r.json())
       .then(d => {
         const el = document.getElementById("counter-value");
-        if (!el) return;  // אם לא קיים, יוצאים בלי לזרוק שגיאה
+        if (!el) return;        // מוודאים שהאלמנט קיים
         el.textContent = d.value || 0;
       })
       .catch(err => console.error("CountAPI:", err));
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    // העלאה אחת בזמן הטעינה
     updateCounter(true);
-    setInterval(() => updateCounter(false), 10_000);
+    // אם תרצה לבדוק בלי לרענן – אפשר להפעיל גם hit במחזור:
+    // setInterval(() => updateCounter(true), 10000);
+    setInterval(() => updateCounter(false), 10000);
   });
 })();
 
