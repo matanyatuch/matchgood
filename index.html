@@ -156,27 +156,31 @@
      1) קאונטר מבקרים  (TODO: החלף yourdomain.com)
      ======================================== */
      <script>
-(function initCounter () {
-  const namespace = "matchgood1.netlify.app";  
-  const key       = "visits";
+  /* קאונטר מבקרים – JSONP עם namespace קבוע */
+  (function initCounter() {
+    // כאן קובעים במפורש את הדומיין (החליפו לדומיין שלכם במידת הצורך)
+    const namespace = 'matchgood1.netlify.app';
+    const key       = 'visits';
 
-  function updateCounter (increment = false) {
-    const endpoint = increment
-      ? `https://api.countapi.xyz/hit/${namespace}/${key}`
-      : `https://api.countapi.xyz/get/${namespace}/${key}`;
+    window.counterCallback = function(data) {
+      document.getElementById('counter-value').textContent = data.value ?? 0;
+    };
 
-    fetch(endpoint)
-      .then(r => r.json())
-      .then(d => {
-        document.getElementById("counter-value").textContent = d.value ?? 0;
-      })
-      .catch(console.error);
-  }
+    function updateCounter(increment = false) {
+      const endpoint = increment
+        ? `https://api.countapi.xyz/hit/${namespace}/${key}?callback=counterCallback`
+        : `https://api.countapi.xyz/get/${namespace}/${key}?callback=counterCallback`;
+      const script = document.createElement('script');
+      script.src = endpoint;
+      document.body.appendChild(script);
+      script.onload = () => script.remove();
+    }
 
-  updateCounter(true);                // ספירת ביקור
-  setInterval(updateCounter, 10_000); // רענון כל 10 ש’
-})();
+    updateCounter(true);
+    setInterval(() => updateCounter(), 10000);
+  })();
 </script>
+
 
 
 /* ========================================
