@@ -155,33 +155,19 @@
   /* ========================================
      1) קאונטר מבקרים  (TODO: החלף yourdomain.com)
      ======================================== */
-     <script>
-  /* קאונטר מבקרים – JSONP עם namespace קבוע */
   (function initCounter() {
-    // כאן קובעים במפורש את הדומיין (החליפו לדומיין שלכם במידת הצורך)
-    const namespace = 'matchgood1.netlify.app';
-    const key       = 'visits';
-
-    window.counterCallback = function(data) {
-      document.getElementById('counter-value').textContent = data.value ?? 0;
-    };
-
     function updateCounter(increment = false) {
       const endpoint = increment
-        ? `https://api.countapi.xyz/hit/${namespace}/${key}?callback=counterCallback`
-        : `https://api.countapi.xyz/get/${namespace}/${key}?callback=counterCallback`;
-      const script = document.createElement('script');
-      script.src = endpoint;
-      document.body.appendChild(script);
-      script.onload = () => script.remove();
+        ? "https://api.countapi.xyz/hit/https://matchgood1.netlify.app//visits"
+        : "https://api.countapi.xyz/get/https://matchgood1.netlify.app//visits";
+      fetch(endpoint)
+        .then(r => r.json())
+        .then(d => { document.getElementById("counter-value").textContent = d.value || 0; })
+        .catch(err => console.error("CountAPI:", err));
     }
-
     updateCounter(true);
-    setInterval(() => updateCounter(), 10000);
+    setInterval(() => updateCounter(false), 10_000);
   })();
-</script>
-
-
 
 /* ========================================
    2) פונקציות מדיה  (תמונות / סרטונים)
@@ -247,10 +233,10 @@ function convertDriveLink(url) {
   let fileId = "";
 
   if (url.includes("/d/")) {
-    // ‎/file/d/FILE_ID/
+    // /file/d/FILE_ID/
     fileId = url.split("/d/")[1].split("/")[0];
   } else if (url.includes("id=")) {
-    // ‎...uc?id=FILE_ID...
+    // ...uc?id=FILE_ID...
     fileId = url.split("id=")[1].split("&")[0];
   }
 
