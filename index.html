@@ -152,51 +152,60 @@
   </div>
 
   <script>
-    (function() {
-      // 1) הגדרות בסיסיות
-      const BASE = "https://api.counterapi.dev/v1";
-      const NS   = "matchgood1";  // החליפו ל־namespace שלכם
-      const NAME = "visits";      // החליפו ל־name שלכם
-    
-      // 2) פונקציה לאיתחול ועדכון המונה
-      function updateCounter(doIncrement) {
-        const endpoint = doIncrement
-          ? `${BASE}/${NS}/${NAME}/up`    // העלאה ב־1
-          : `${BASE}/${NS}/${NAME}`;      // שליפת הערך הנוכחי
-    
-        console.log("▶︎ CounterAPI", endpoint);
-    
-        fetch(endpoint, { cache: "no-store" })  // מבטל cache בדפדפן
-          .then(res => {
-            if (!res.ok) throw new Error(`Status ${res.status}`);
-            return res.json();
-          })
-          .then(data => {
-            const el   = document.getElementById("counter-value");
-            if (!el) return;
-    
-            const prev  = parseInt(el.textContent, 10) || 0;
-            const next  = data.count ?? 0;
-    
-            // רק נתעדכן אם הערך לא יורד
-            if (next >= prev) {
-              el.textContent = next;
-            }
-          })
-          .catch(err => console.error("CounterAPI error:", err));
-      }
-    
-      // 3) חיבור לאירוע טעינת ה־DOM
-      document.addEventListener("DOMContentLoaded", () => {
-        // העלאה ראשונית (+1) ברענון העמוד
-        updateCounter(true);
-    
-        // קבלת ערך (get) כל 30 שניות
-        setInterval(() => updateCounter(false), 30_000);
-      });
-    })();
+ (function() {
+  // הגדרות בסיסיות עם הפרטים שלך
+  const BASE = "https://api.counterapi.dev/v1";
+  const NS = "matchgood1";    // Namespace שלך
+  const NAME = "visits";      // שם המונה
+  
+  async function updateCounter(doIncrement) {
+    try {
+      const endpoint = doIncrement 
+        ? `${BASE}/${NS}/${NAME}/up` 
+        : `${BASE}/${NS}/${NAME}`;
 
+      console.log("▶︎ CounterAPI call:", endpoint);
+
+      const response = await fetch(endpoint, {
+        method: doIncrement ? 'PUT' : 'GET', // חשוב: PUT לעדכון המונה
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      
+      const data = await response.json();
+      console.log('CounterAPI response:', data);
+
+      const counterElement = document.getElementById('counter-value');
+      if (counterElement) {
+        counterElement.textContent = data.count || 0;
+        counterElement.style.fontWeight = 'bold';
+        counterElement.style.color = '#2ecc71';
+      }
+      
+      // עדכון תווית אם צריך
+      const label = document.querySelector('[data-counter-label]');
+      if (label) label.textContent = doIncrement ? 'Visits (updated!)' : 'Visits';
+
+    } catch (error) {
+      console.error('CounterAPI Error:', error);
+      const counterElement = document.getElementById('counter-value');
+      if (counterElement) counterElement.textContent = '❌';
+    }
+  }
+
+  // הפעלה אוטומטית כאשר הדף נטען
+  document.addEventListener('DOMContentLoaded', () => {
+    // עדכן מונה עם ביקור חדש
+    updateCounter(true);
     
+    // עדכן כל 20 שניות (למניעת קריאות יתר)
+    setInterval(() => updateCounter(false), 20000);
+  });
+})();
     
 /* ========================================
    2) פונקציות מדיה  (תמונות / סרטונים)
