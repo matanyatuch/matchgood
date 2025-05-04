@@ -137,17 +137,17 @@
 
     <div class="text-center mt-4">
       <button id="readMoreBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold">
-        קרא עוד
+       מידע נוסף
       </button>
     </div>
 
     <div id="moreContent" class="hidden mt-4">
-      <p class="text-center text-blue-800 font-semibold mb-2">עוד תמונות וסרטונים – השראה לעשייה:</p>
+      <p class="text-center text-blue-800 font-semibold mb-2">האירגונים שמופיעים באתר שלנו</p>
       <div class="grid grid-cols-2 gap-2">
-        <img src="https://via.placeholder.com/300x200?text=Inspiration+1" alt="Inspiration 1" />
-        <img src="https://via.placeholder.com/300x200?text=Inspiration+2" alt="Inspiration 2" />
-        <img src="https://via.placeholder.com/300x200?text=Inspiration+3" alt="Inspiration 3" />
-        <img src="https://via.placeholder.com/300x200?text=Inspiration+4" alt="Inspiration 4" />
+        <img src="https://hitnadvut.kfar-saba.muni.il/wp-content/uploads/2020/12/%D7%99%D7%93%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%A1%D7%9E%D7%9B%D7%99-%D7%99%D7%A1%D7%95%D7%93-%D7%9C%D7%95%D7%92%D7%95-%D7%A1%D7%99%D7%95%D7%A2-%D7%91%D7%93%D7%A8%D7%9B%D7%99%D7%9D-%D7%A9%D7%97%D7%95%D7%A8-2019-002.jpg" alt="Inspiration 1" />
+        <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" alt="Inspiration 2" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" alt="Inspiration 3" />
+        <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" alt="Inspiration 4" />
       </div>
     </div>
 
@@ -421,7 +421,7 @@ function convertDriveLink(url) {
      ======================================== */
   readMoreBtn.addEventListener("click", () => {
     moreContent.classList.toggle("hidden");
-    readMoreBtn.textContent = moreContent.classList.contains("hidden") ? "קרא עוד" : "הסתר";
+    readMoreBtn.textContent = moreContent.classList.contains("hidden") ? "לעוד פרטים" : "הסתר";
   });
 
   /* ========================================
@@ -557,7 +557,7 @@ function convertDriveLink(url) {
       <button
         class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-semibold"
         onclick="toggleAmutaGallery('${gid}')">
-        קרא עוד
+        לתמונות וסרטונים
       </button>
 
       <div id="${gid}" class="amuta-gallery hidden"></div>
