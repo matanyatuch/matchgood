@@ -525,29 +525,45 @@ function convertDriveLink(url) {
       const card = document.createElement("div");
       card.className = "bg-blue-50 rounded-lg p-4 border border-blue-200";
       card.innerHTML = `
-  <div class="flex items-start">
-    <div class="mr-4 text-blue-600 text-3xl">
+  <div class="flex items-start gap-4">
+    <!-- אייקון מעוגל -->
+    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center text-white text-2xl">
       <i class="fas ${a.icon}"></i>
     </div>
 
-    <div class="flex-1">
+    <!-- גוף הכרטיס -->
+    <div class="flex-1 space-y-2">
+      <!-- כותרת -->
       <h4 class="font-bold text-lg text-blue-800">${a.name}</h4>
 
-      <p class="text-sm text-gray-700 mt-1">${ratioStr}% התאמה</p>
+      <!-- תג אחוז -->
+      <span class="inline-block text-xs font-bold px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+        ${ratioStr}% התאמה
+      </span>
 
-      <!-- ❗  שורה חדשה – התיאור מוצג מיד  -->
-      <p class="text-sm text-gray-800 mt-2">
-        ${AMUTA_DATA[a.amKey].description}
+      <!-- תיאור משופר -->
+      <p class="text-sm text-gray-800 leading-relaxed">
+        ${
+          // הופך את המשפט הראשון לבולט, ואת השאר לפסקה חדשה
+          (() => {
+            const firstSentence = AMUTA_DATA[a.amKey].description.split(".")[0] + ".";
+            const rest = AMUTA_DATA[a.amKey].description.replace(firstSentence, "").trim();
+            return `<span class="font-semibold text-blue-900">${firstSentence}</span> ${rest}`;
+          })()
+        }
       </p>
 
-      <button class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-lg mt-2 text-sm font-semibold"
-              onclick="toggleAmutaGallery('${gid}')">
+      <!-- כפתור קרא‑עוד + גלריה -->
+      <button
+        class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-semibold"
+        onclick="toggleAmutaGallery('${gid}')">
         קרא עוד
       </button>
 
       <div id="${gid}" class="amuta-gallery hidden"></div>
     </div>
   </div>`;
+
 
       recommendedAmutasDiv.appendChild(card);
 
