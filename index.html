@@ -332,58 +332,65 @@ function convertDriveLink(url) {
   /* ========================================
      4) נתוני עמותות
      ======================================== */
-  const AMUTA_DATA = {
-    mda: {
-      name:"מד\"א – מגן דוד אדום",
-      icon:"fa-ambulance",
-      images:[
-        "https://scontent.ftlv5-1.fna.fbcdn.net/v/t39.30808-6/468321608_10161557319136708_4653121418500952521_n.png?_nc_cat=100&ccb=1-7&_nc_sid=0b6b33&_nc_ohc=XqD2e2vzEiAQ7kNvwGaEK91&_nc_oc=AdlkOf4sCMOgXdzjPSvz2mepASB6Ls9pijo19WGSmdYTH59GtlI4YtHzGcE07QNNMN4&_nc_zt=23&_nc_ht=scontent.ftlv5-1.fna&_nc_gid=gAOO1anqkG9qcsdHHsqQsA&oh=00_AfG4ajakisi0fGejnJDVmR8C8qaB3-gVT0b4l4g6pDs0cQ&oe=67FE1F8F",
-        "https://swords.ifmda.org.il/wp-content/uploads/2023/10/%D7%A6%D7%95%D7%95%D7%AA%D7%99-%D7%9E%D7%93%D7%90-%D7%91%D7%96%D7%99%D7%A8%D7%AA-%D7%A0%D7%A4%D7%99%D7%9C%D7%94-%D7%91%D7%90%D7%A9%D7%A7%D7%9C%D7%95%D7%9F-%D7%A6%D7%99%D7%9C%D7%95%D7%9D-%D7%AA%D7%99%D7%A2%D7%95%D7%93-%D7%9E%D7%91%D7%A6%D7%A2%D7%99-%D7%9E%D7%93%D7%90-5519-2-1024x768.jpg"
-      ]
-    },
-    fire:{
-      name:"כבאות והצלה",
-      icon:"fa-fire",
-      images:[
-        "https://www.gov.il/BlobFolder/guide/induction_process/he/FIRE220112KR850_1655.jpg",
-        "https://www.gov.il/BlobFolder/news/recruitment_of_fire_fighters_2024/he/FIRE230115KR850_8859.jpg",
-        "https://www.gov.il/BlobFolder/news/recruitment_of_fire_fighters_2024/he/FIRE230421KR850_1453.jpg",
-        "https://youtu.be/uBbq91mKqUg"
-      ]
-    },
-    yedidim:{
-      name:"ידידים – עזרה בדרכים",
-      icon:"fa-car",
-      images:[
-        "https://www.israelhayom.co.il/wp-content/uploads/2022/01/16075818009517_b.jpg",
-        "https://beitarillit-online.com/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-02-12-at-12.27.44-ol1zzwe06u55vy0kivfdtmx1ea55pgy2sapnzpoaww.jpeg?v=1581504974"
-      ]
-    },
-    joy:{
-      name:"לשמח חולים",
-      icon:"fa-smile",
-      images:[
-        "https://www.youtube.com/shorts/s_ndt2Yfiqs",
-        "https://drive.google.com/file/d/1GWp3xqUVcnTgo8mOSdF5OlZQQtwBx--B/view?t=3"
-      ]
-    },
-    hand:{
-      name:"להושיט יד",
-      icon:"fa-hand-holding-heart",
-      images:[
-        "https://via.placeholder.com/300x200?text=Hand+1",
-        "https://via.placeholder.com/300x200?text=Hand+2"
-      ]
-    },
-    special:{
-      name:"צרכים מיוחדים",
-      icon:"fa-wheelchair",
-      images:[
-        "https://youtube.com/shorts/s_ndt2Yfiqs",
-        "https://youtube.com/shorts/s_ndt2Yfiqs"
-      ]
-    }
-  };
+     const AMUTA_DATA = {
+  mda: {
+    name: "מד\"א – מגן דוד אדום",
+    icon: "fa-ambulance",
+    description: "זה לא משנה אם אתה נוער או בוגר יותר – בסופו של דבר, שניכם מצילים חיים. ללכת לישון בהרגשה שהיום הצלת חיים זו הרגשה מדהימה. ההתנדבות במד\"א נותנת לך פרופורציות וערך אמיתי לחיים, והיא מומלצת לכל אחד שמסוגל להתמודד עם מצבים מורכבים.",
+    images: [
+      "https://scontent.ftlv5-1.fna.fbcdn.net/v/t39.30808-6/468321608_10161557319136708_4653121418500952521_n.png?_nc_cat=100&ccb=1-7&_nc_sid=0b6b33&_nc_ohc=XqD2e2vzEiAQ7kNvwGaEK91&_nc_oc=AdlkOf4sCMOgXdzjPSvz2mepASB6Ls9pijo19WGSmdYTH59GtlI4YtHzGcE07QNNMN4&_nc_zt=23&_nc_ht=scontent.ftlv5-1.fna&_nc_gid=gAOO1anqkG9qcsdHHsqQsA&oh=00_AfG4ajakisi0fGejnJDVmR8C8qaB3-gVT0b4l4g6pDs0cQ&oe=67FE1F8F",
+      "https://swords.ifmda.org.il/wp-content/uploads/2023/10/%D7%A6%D7%95%D7%95%D7%AA%D7%99-%D7%9E%D7%93%D7%90-%D7%91%D7%96%D7%99%D7%A8%D7%AA-%D7%A0%D7%A4%D7%99%D7%9C%D7%94-%D7%91%D7%90%D7%A9%D7%A7%D7%9C%D7%95%D7%9F-%D7%A6%D7%99%D7%9C%D7%95%D7%9D-%D7%AA%D7%99%D7%A2%D7%95%D7%93-%D7%9E%D7%91%D7%A6%D7%A2%D7%99-%D7%9E%D7%93%D7%90-5519-2-1024x768.jpg"
+    ]
+  },
+  fire: {
+    name: "כבאות והצלה",
+    icon: "fa-fire",
+    description: "כבאות והצלה זה לא רק כיבוי אש – זה גם חילוצים והצלת חיים במצבים מורכבים ומאתגרים מאוד. ההתנדבות בכבאות והצלה היא מאתגרת ומספקת במיוחד, ומומלצת מאוד לחובבי האדרנלין שבינינו.",
+    images: [
+      "https://www.gov.il/BlobFolder/guide/induction_process/he/FIRE220112KR850_1655.jpg",
+      "https://www.gov.il/BlobFolder/news/recruitment_of_fire_fighters_2024/he/FIRE230115KR850_8859.jpg",
+      "https://www.gov.il/BlobFolder/news/recruitment_of_fire_fighters_2024/he/FIRE230421KR850_1453.jpg",
+      "https://youtu.be/uBbq91mKqUg"
+    ]
+  },
+  yedidim: {
+    name: "ידידים – עזרה בדרכים",
+    icon: "fa-car",
+    description: "אף אחד לא רוצה להיתקע באמצע כביש מהיר, אבל זה קורה – וקורה הרבה. דמיינו רגע את ההרגשה שהגעתם לעזור למשפחה שנתקעה בלי שמן או חילצתם ילד שננעל בתוך רכב. ההתנדבות בידידים לא דורשת ידע מורכב או ציוד מקצועי, ומתאימה גם למי שאין לו עדיין רישיון נהיגה. אתם מוזמנים להצטרף ולהושיט יד.",
+    images: [
+      "https://www.israelhayom.co.il/wp-content/uploads/2022/01/16075818009517_b.jpg",
+      "https://beitarillit-online.com/wp-content/uploads/elementor/thumbs/WhatsApp-Image-2020-02-12-at-12.27.44-ol1zzwe06u55vy0kivfdtmx1ea55pgy2sapnzpoaww.jpeg?v=1581504974"
+    ]
+  },
+  joy: {
+    name: "לשמח חולים",
+    icon: "fa-smile",
+    description: "דמיינו שאתם חס ושלום בבית חולים, מביטים על הקירות ושוקעים בצער ובכאב. ופתאום מישהו נכנס ומנגן לכם שיר שאתם אוהבים. ההתנדבות הזו היא הזדמנות להקל על חולים, לתת להם תקווה, חיוך והפוגה מהכאב. ההרגשה שתצאו איתה היא סיפוק ענק שאין לו תחליף.",
+    images: [
+      "https://www.youtube.com/shorts/s_ndt2Yfiqs",
+      "https://drive.google.com/file/d/1GWp3xqUVcnTgo8mOSdF5OlZQQtwBx--B/view?t=3"
+    ]
+  },
+  hand: {
+    name: "להושיט יד",
+    icon: "fa-hand-holding-heart",
+    description: "לרובנו יש אחים גדולים וקטנים, אך יש ילדים שאין להם דמות כזו בחיים. להושיט יד מחבר אתכם למשפחה שזקוקה לכם כאחים גדולים: לצאת עם הילד לטיולים, לעזור בשיעורי בית או סתם לשוחח על החיים. זו התנדבות לא פשוטה, אך לראות את הילד מתפתח ומקבל כלים לחיים – זו הרגשה מספקת וייחודית.",
+    images: [
+      "https://via.placeholder.com/300x200?text=Hand+1",
+      "https://via.placeholder.com/300x200?text=Hand+2"
+    ]
+  },
+  special: {
+    name: "צרכים מיוחדים",
+    icon: "fa-wheelchair",
+    description: "לראות אדם שמתמודד עם מוגבלות פיזית קשה ובכל זאת מצליח לעשות משהו מדהים עם חייו – זו חוויה שמלמדת המון. ההתנדבות עם אנשים עם צרכים מיוחדים תפתח בכם סבלנות, אכפתיות ונתינה עצומה. אי אפשר לתאר במילים את הסיפוק שתרגישו כשתראו אותם מחייכים ומצליחים בזכותכם.",
+    images: [
+      "https://youtube.com/shorts/s_ndt2Yfiqs",
+      "https://youtube.com/shorts/s_ndt2Yfiqs"
+    ]
+  }
+};
+
 
   /* ========================================
      5) משתני ניהול
