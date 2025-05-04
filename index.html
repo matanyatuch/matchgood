@@ -45,7 +45,7 @@
 
   <!-- קאונטר מבקרים -->
   <div class="visitor-counter">
-    מבקרים באתר: <span id="counter-value">0</span>
+   מספר המבקרים באתר עד כה: <span id="counter-value">0</span>
   </div>
 
 <!-- ====== Intro ====== -->
@@ -56,13 +56,15 @@
     <p class="mb-6 leading-relaxed text-lg">
       לכל אדם יש משהו טוב לתת לעולם – <strong>כל אחד בדרך שלו.</strong><br />
       יש מי שמתחבר למוזיקה ומנגן כדי לשמח חולים,<br />
-      ויש מי שאוהב אקשן ומתנדב במד"א או בכבאות והצלה.<br />
+      ויש מי שאוהב אקשן ומתנדב בגופי החירום השונים.<br />
       <br />
       <strong>השאלון שלפניך</strong> נועד לעזור לך לגלות איפה בדיוק נמצא המקום<br />
       שבו תרגיש הכי משמעותי והכי מועיל.<br />
       <br />
       השאלון מעט ארוך, אך <strong>התוצאה בהחלט שווה את זה.</strong><br />
-      בהצלחה!
+      בהצלחה! 
+      הערה: השאלון לא מחייב אותך להתנדב בשום מקום, אלא רק נותן לך כיוון.<br />
+      הערה נוספת: השאלון נכתב מטעמי נוחות בלבד בלשון זכר אך פונה לשני המינים.
     </p>
     <button id="startQuizBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-3 rounded-lg transition-colors text-lg font-semibold">
       <i class="fas fa-play mr-2"></i> התחל שאלון
@@ -573,12 +575,15 @@ function convertDriveLink(url) {
   }
   window.toggleAmutaGallery = id => document.getElementById(id)?.classList.toggle("hidden");
 
-  /* ========================================
-     9) כפתור WhatsApp
-     ======================================== */
-  whatsappBtn.addEventListener("click", ()=>{
-    window.open("https://api.whatsapp.com/send?phone=972508787826","_blank");
-  });
+  /* 9) כפתור WhatsApp
+   =========================== */
+whatsappBtn.addEventListener("click", () => {
+  const phone   = "972508787826";
+  const message = "היי, מילאתי את השאלון שלך ואשמח לשמוע עוד פרטים לגבי ההתנדבות";
+  const url     = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+});
+
 
   /* ========================================
      10) מאזיני כפתורים
