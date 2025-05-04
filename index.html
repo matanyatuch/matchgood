@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <title>שאלון להתאמת התנדבות</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- מניעת זום כפול / pinch -->
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
   <!-- TailwindCSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
@@ -15,7 +18,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
-    html { direction: rtl; scroll-behavior: smooth; }
+    html { direction: rtl; scroll-behavior: smooth; touch-action: manipulation; }
     body {
       margin: 0; padding: 0;
       font-family: 'Assistant', sans-serif;
@@ -56,13 +59,10 @@
     <p class="mb-6 leading-relaxed text-lg">
       לכל אדם יש משהו טוב לתת לעולם – <strong>כל אחד בדרך שלו.</strong><br />
       יש מי שמתחבר למוזיקה ומנגן כדי לשמח חולים,<br />
-      ויש מי שאוהב אקשן ומתנדב בגופי החירום השונים.<br />
-      <br />
+      ויש מי שאוהב אקשן ומתנדב בגופי החירום השונים.<br /><br />
       <strong>השאלון שלפניך</strong> נועד לעזור לך לגלות איפה בדיוק נמצא המקום<br />
-      שבו תרגיש הכי משמעותי והכי מועיל.<br />
-      <br />
-      השאלון מעט ארוך, אך <strong>התוצאה בהחלט שווה את זה.</strong><br />
-     
+      שבו תרגיש הכי משמעותי והכי מועיל.<br /><br />
+      השאלון מעט ארוך, אך <strong>התוצאה בהחלט שווה את זה.</strong><br /><br />
       הערה: השאלון לא מחייב אותך להתנדב בשום מקום, אלא רק נותן לך כיוון.<br />
       הערה נוספת: השאלון נכתב מטעמי נוחות בלבד בלשון זכר אך פונה לשני המינים.
     </p>
@@ -72,95 +72,111 @@
   </div>
 </div>
 
-  <!-- ====== Quiz Card ====== -->
-  <div id="question-container" class="w-full max-w-md bg-white shadow-lg rounded-xl p-6 mb-6 border-4 border-blue-700 hidden">
-    <!-- Progress -->
-    <div class="mb-6">
-      <div id="progress-indicator" class="text-sm font-medium text-blue-700 mb-1"></div>
-      <div class="w-full bg-gray-200 rounded-full h-2.5">
-        <div id="progress-bar" class="bg-blue-700 h-2.5 rounded-full transition-all duration-300" style="width:0%"></div>
-      </div>
+<!-- ====== Quiz Card ====== -->
+<div id="question-container" class="w-full max-w-md bg-white shadow-lg rounded-xl p-6 mb-6 border-4 border-blue-700 hidden">
+  <!-- Progress -->
+  <div class="mb-6">
+    <div id="progress-indicator" class="text-sm font-medium text-blue-700 mb-1"></div>
+    <div class="w-full bg-gray-200 rounded-full h-2.5">
+      <div id="progress-bar" class="bg-blue-700 h-2.5 rounded-full transition-all duration-300" style="width:0%"></div>
     </div>
-    <!-- Question -->
-    <div id="question-card" class="text-center mb-6">
-      <h2 id="question-text" class="font-semibold mb-6 text-xl"></h2>
-      <div class="flex flex-col gap-4">
-        <button class="answer-btn border-4 border-green-500 rounded-xl bg-white text-green-700 font-semibold h-14 hover:bg-green-50 flex items-center justify-center gap-2" data-value="yes">
-          <i class="fas fa-check-circle text-xl"></i> כן
-        </button>
-        <button class="answer-btn border-4 border-yellow-500 rounded-xl bg-white text-yellow-700 font-semibold h-14 hover:bg-yellow-50 flex items-center justify-center gap-2" data-value="maybe">
-          <i class="fas fa-question-circle text-xl"></i> בערך
-        </button>
-        <button class="answer-btn border-4 border-red-500 rounded-xl bg-white text-red-700 font-semibold h-14 hover:bg-red-50 flex items-center justify-center gap-2" data-value="no">
-          <i class="fas fa-times-circle text-xl"></i> לא
-        </button>
-      </div>
-    </div>
-    <!-- Nav -->
-    <div class="flex justify-between">
-      <button id="backBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg transition-colors flex items-center" style="visibility:hidden;">
-        <i class="fas fa-arrow-left ml-2"></i> חזור
+  </div>
+  <!-- Question -->
+  <div id="question-card" class="text-center mb-6">
+    <h2 id="question-text" class="font-semibold mb-6 text-xl"></h2>
+    <div class="flex flex-col gap-4">
+      <button class="answer-btn border-4 border-green-500 rounded-xl bg-white text-green-700 font-semibold h-14 hover:bg-green-50 flex items-center justify-center gap-2" data-value="yes">
+        <i class="fas fa-check-circle text-xl"></i> כן
       </button>
-      <button id="skipBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg transition-colors flex items-center">
-        דלג <i class="fas fa-forward mr-2"></i>
+      <button class="answer-btn border-4 border-yellow-500 rounded-xl bg-white text-yellow-700 font-semibold h-14 hover:bg-yellow-50 flex items-center justify-center gap-2" data-value="maybe">
+        <i class="fas fa-question-circle text-xl"></i> בערך
+      </button>
+      <button class="answer-btn border-4 border-red-500 rounded-xl bg-white text-red-700 font-semibold h-14 hover:bg-red-50 flex items-center justify-center gap-2" data-value="no">
+        <i class="fas fa-times-circle text-xl"></i> לא
       </button>
     </div>
   </div>
+  <!-- Nav -->
+  <div class="flex justify-between">
+    <button id="backBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg transition-colors flex items-center" style="visibility:hidden;">
+      <i class="fas fa-arrow-left ml-2"></i> חזור
+    </button>
+    <button id="skipBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-lg transition-colors flex items-center">
+      דלג <i class="fas fa-forward mr-2"></i>
+    </button>
+  </div>
+</div>
 
-  <!-- ====== Results ====== -->
-  <div id="results-container" class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-6 border-4 border-blue-700 hidden">
-    <div class="text-center mb-6">
-      <i class="fas fa-chart-pie text-blue-600 text-5xl mb-4"></i>
-      <h2 class="text-2xl font-bold text-blue-800 mb-2">תוצאות השאלון שלך</h2>
-      <p class="text-gray-600">לפניך פילוח ההתאמה שלך לסוגי ההתנדבויות השונות</p>
-    </div>
+<!-- ====== Results ====== -->
+<div id="results-container" class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-6 border-4 border-blue-700 hidden">
+  <div class="text-center mb-6">
+    <i class="fas fa-chart-pie text-blue-600 text-5xl mb-4"></i>
+    <h2 class="text-2xl font-bold text-blue-800 mb-2">תוצאות השאלון שלך</h2>
+    <p class="text-gray-600">לפניך פילוח ההתאמה שלך לסוגי ההתנדבויות השונות</p>
+  </div>
 
-    <!-- Pie -->
-    <div class="mb-8">
-      <h3 class="text-lg font-semibold mb-4 text-center">
-        <i class="fas fa-chart-pie mr-2"></i> התפלגות ההתאמה
-      </h3>
-      <div class="flex items-center justify-center mx-auto w-[300px] h-[300px] chart-container">
-        <canvas id="pieChart"></canvas>
-      </div>
-    </div>
-
-    <div class="text-center mt-4 text-lg text-blue-800 font-semibold mb-4">
-      איזה בן אדם מדהים את/ה! זה המקומות שיכולים להתאים לך:
-    </div>
-
-    <div id="recommended-amutas" class="space-y-4 mb-4"></div>
-
-    <div class="text-center mt-4">
-      <button id="whatsappBtn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold inline-flex items-center gap-2">
-        <i class="fab fa-whatsapp text-xl"></i> אני רוצה עוד פרטים!
-      </button>
-    </div>
-
-    <div class="text-center mt-4">
-      <button id="readMoreBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold">
-       מידע נוסף
-      </button>
-    </div>
-
-    <div id="moreContent" class="hidden mt-4">
-      <p class="text-center text-blue-800 font-semibold mb-2">האירגונים שמופיעים באתר שלנו</p>
-      <div class="grid grid-cols-2 gap-2">
-        <img src="https://hitnadvut.kfar-saba.muni.il/wp-content/uploads/2020/12/%D7%99%D7%93%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%A1%D7%9E%D7%9B%D7%99-%D7%99%D7%A1%D7%95%D7%93-%D7%9C%D7%95%D7%92%D7%95-%D7%A1%D7%99%D7%95%D7%A2-%D7%91%D7%93%D7%A8%D7%9B%D7%99%D7%9D-%D7%A9%D7%97%D7%95%D7%A8-2019-002.jpg" alt="Inspiration 1" />
-        <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" alt="Inspiration 2" />
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" alt="Inspiration 3" />
-        <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" alt="Inspiration 4" />
-      </div>
-    </div>
-
-    <div class="text-center mt-8">
-      <button onclick="location.reload()" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-semibold">
-        <i class="fas fa-redo mr-2"></i> התחלה מחדש
-      </button>
+  <!-- Pie -->
+  <div class="mb-8">
+    <h3 class="text-lg font-semibold mb-4 text-center">
+      <i class="fas fa-chart-pie mr-2"></i> התפלגות ההתאמה
+    </h3>
+    <div class="flex items-center justify-center mx-auto w-[300px] h-[300px] chart-container">
+      <canvas id="pieChart"></canvas>
     </div>
   </div>
 
-  <script>
+  <div class="text-center mt-4 text-lg text-blue-800 font-semibold mb-4">
+    איזה בן אדם מדהים את/ה! זה המקומות שיכולים להתאים לך:
+  </div>
+
+  <div id="recommended-amutas" class="space-y-4 mb-4"></div>
+
+  <!-- כפתור הצגת כל העמותות -->
+  <div class="text-center mt-2">
+    <button id="showAllBtn"
+            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg transition-colors text-base font-semibold">
+      לכל המקומות באתר
+    </button>
+  </div>
+
+  <div class="text-center mt-4">
+    <button id="whatsappBtn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold inline-flex items-center gap-2">
+      <i class="fab fa-whatsapp text-xl"></i> אני רוצה עוד פרטים!
+    </button>
+  </div>
+
+  <div class="text-center mt-4">
+    <button id="readMoreBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold">
+      מידע נוסף
+    </button>
+  </div>
+
+  <div id="moreContent" class="hidden mt-4">
+    <p class="text-center text-blue-800 font-semibold mb-2">הארגונים שמופיעים באתר שלנו</p>
+    <div class="grid grid-cols-2 gap-2">
+      <img src="https://hitnadvut.kfar-saba.muni.il/wp-content/uploads/2020/12/%D7%99%D7%93%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%A1%D7%9E%D7%9B%D7%99-%D7%99%D7%A1%D7%95%D7%93-%D7%9C%D7%95%D7%92%D7%95-%D7%A1%D7%99%D7%95%D7%A2-%D7%91%D7%93%D7%A8%D7%9B%D7%99%D7%9D-%D7%A9%D7%97%D7%95%D7%A8-2019-002.jpg" alt="ידידים" />
+      <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" alt="שמח בבתי חולים" />
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" alt="כבאות והצלה" />
+      <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" alt="משען למרפא" />
+    </div>
+  </div>
+
+  <div class="text-center mt-8">
+    <button onclick="location.reload()" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-semibold">
+      <i class="fas fa-redo mr-2"></i> התחלה מחדש
+    </button>
+  </div>
+</div>
+
+<script>
+/* ========================================
+   מניעת זום בדאבל‑קליק בדפדפנים מסויימים
+   ======================================== */
+document.addEventListener("dblclick", e => e.preventDefault());
+
+/* ========================================
+   1) קאונטר מבקרים (CounterAPI)
+   ======================================== */
 (function() {
   const BASE = "https://api.counterapi.dev/v1";
   const NS = "matchgood1";
@@ -168,53 +184,37 @@
 
   async function updateCounter(doIncrement) {
     try {
-      const endpoint = doIncrement 
+      const endpoint = doIncrement
         ? `${BASE}/${NS}/${NAME}/up`
         : `${BASE}/${NS}/${NAME}`;
 
-      console.log("📡 Sending request to:", endpoint);
-
       const response = await fetch(endpoint, {
-        method: 'GET', // חייב להיות GET לפי דרישות ה-API
+        method: 'GET',
         cache: 'no-cache',
-        headers: {
-          'Accept': 'application/json',
-        }
+        headers: { 'Accept': 'application/json' }
       });
 
       const data = await response.json();
-      console.log('🔔 API Response:', data);
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${data.error || response.status}`);
-      }
+      if (!response.ok) throw new Error(data.error || response.status);
 
       const counterElement = document.getElementById('counter-value');
       if (counterElement) {
         counterElement.textContent = data.count;
-        counterElement.style.animation = 'pop 0.5s ease'; // אנימציה קטנה
+        counterElement.style.animation = 'pop 0.5s ease';
       }
 
     } catch (error) {
-      console.error('‼️ Critical Error:', error);
+      console.error('CounterAPI Error:', error);
       const counterElement = document.getElementById('counter-value');
       if (counterElement) {
-        counterElement.innerHTML = `
-          <span style="color: red">Error</span>
-          <button onclick="location.reload()">Retry</button>
-        `;
+        counterElement.innerHTML = `<span style="color:red">Error</span> <button onclick="location.reload()">Retry</button>`;
       }
     }
   }
 
-  // הוסף אנימציית CSS
   const style = document.createElement('style');
   style.textContent = `
-    @keyframes pop {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
+    @keyframes pop { 0%{transform:scale(1);} 50%{transform:scale(1.2);} 100%{transform:scale(1);} }
   `;
   document.head.appendChild(style);
 
@@ -223,36 +223,31 @@
     setInterval(() => updateCounter(false), 15000);
   });
 })();
-    
+
 /* ========================================
-   2) פונקציות מדיה  (תמונות / סרטונים)
+   2) פונקציות מדיה (YouTube / Drive / תמונות)
    ======================================== */
-   function createMediaElement(url) {
-  /* --- YouTube --- */
+function createMediaElement(url) {
   if (url.includes("youtu")) {
     const iframe = document.createElement("iframe");
     iframe.className = "w-full h-56";
     iframe.src = convertYoutubeLink(url);
     iframe.frameBorder = "0";
-    iframe.allow =
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
     iframe.allowFullscreen = true;
     return iframe;
   }
 
-  /* --- Google Drive --- */
   if (url.includes("drive.google.com")) {
     const iframe = document.createElement("iframe");
     iframe.className = "w-full h-56";
-    iframe.src = convertDriveLink(url);      // ⬅️ פונקציה חדשה
+    iframe.src = convertDriveLink(url);
     iframe.frameBorder = "0";
-    iframe.allow =
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
     iframe.allowFullscreen = true;
     return iframe;
   }
 
-  /* --- קבצי וידאו ישירים --- */
   if (url.match(/\.(mp4|webm)(\?.*)?$/i)) {
     const video = document.createElement("video");
     video.className = "w-full h-56";
@@ -261,89 +256,65 @@
     return video;
   }
 
-  /* --- ברירת‑מחדל: תמונה --- */
   const img = document.createElement("img");
   img.src = url;
   return img;
 }
-
-/* המרה לקישור Embed של YouTube */
 function convertYoutubeLink(url) {
-  if (url.includes("youtu.be/")) {
-    return "https://www.youtube.com/embed/" + url.split("youtu.be/")[1];
-  } else if (url.includes("watch?v=")) {
-    return (
-      "https://www.youtube.com/embed/" + url.split("watch?v=")[1].split("&")[0]
-    );
-  }
+  if (url.includes("youtu.be/")) return "https://www.youtube.com/embed/" + url.split("youtu.be/")[1];
+  if (url.includes("watch?v=")) return "https://www.youtube.com/embed/" + url.split("watch?v=")[1].split("&")[0];
   return url;
 }
-
-/* המרה לקישור Embed של Google Drive */
 function convertDriveLink(url) {
-  /** צורות קישור אופייניות:
-   *  https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-   *  https://drive.google.com/uc?id=FILE_ID&export=download
-   */
   let fileId = "";
-
-  if (url.includes("/d/")) {
-    // /file/d/FILE_ID/
-    fileId = url.split("/d/")[1].split("/")[0];
-  } else if (url.includes("id=")) {
-    // ...uc?id=FILE_ID...
-    fileId = url.split("id=")[1].split("&")[0];
-  }
-
-  return fileId
-    ? `https://drive.google.com/file/d/${fileId}/preview`
-    : url; // fallback – אם לא הצלחנו לחלץ
+  if (url.includes("/d/")) fileId = url.split("/d/")[1].split("/")[0];
+  else if (url.includes("id=")) fileId = url.split("id=")[1].split("&")[0];
+  return fileId ? `https://drive.google.com/file/d/${fileId}/preview` : url;
 }
 
-  /* ========================================
-     3) שאלות  (Typo‑fix: special)
-     ======================================== */
-  const questions = [
-    { id:"q1",  text:"האם אתה אוהב לעבוד עם הרבה אנשים ביחד?",      amutas:["mda","special","joy"] },
-    { id:"q2",  text:"אתה בדרך כלל זמין בווצאפ?",                    amutas:["mda","fire","yedidim"] },
-    { id:"q3",  text:"יש לך ניסיון עם צרכים מיוחדים (מכל סוג)?",     amutas:["hand","joy","special"] },
-    { id:"q4",  text:"אתה מסוגל לעבוד תחת לחץ?",                     amutas:["mda","fire","yedidim"] },
-    { id:"q5",  text:"אתה טיפוס שאוהב להוציא אנרגיות?",              amutas:["hand","joy","special"] },
-    { id:"q6",  text:"האם אתה מתנדב כבר במקום כלשהו?",               amutas:["mda","fire","yedidim"] },
-    { id:"q7",  text:"אתה מוזיקאי או סתם אוהב לשיר ולנגן?",           amutas:["joy","hand","special"] },
-    { id:"q8",  text:"אתה מבלה הרבה זמן בנסיעות?",                   amutas:["yedidim"] },
-    { id:"q9",  text:"יש לך רישיון נהיגה?",                          amutas:["mda","yedidim"] },
-    { id:"q10", text:"האם אתה פנוי בשבתות?",                         amutas:["mda","yedidim"] },
-    { id:"q11", text:"האם תוכל להקדיש יום ספציפי בשבוע להתנדבות?",   amutas:["joy","hand","special"] },
-    { id:"q12", text:"אתה אוהב אתגרים?",                              amutas:["mda","yedidim","special"] },
-    { id:"q13", text:"האם אתה מסוגל להיות שמח גם במצבים עצובים?",    amutas:["mda","yedidim"] },
-    { id:"q14", text:"מסוגל לעבוד מכל הלב בלי לצפות לתמורה?",        amutas:["special","yedidim","joy","hand"] },
-    { id:"q15", text:"האם אתה מרגיש שאתה יכול להשפיע על אדם אחר?",   amutas:["joy","hand","special"] },
-    { id:"q16", text:"האם תהיה מוכן לעבור הכשרה פיזית ומעשית?",      amutas:["mda","yedidim","fire"] },
-    { id:"q17", text:"אתה אדם יצירתי?",                               amutas:["mda","special","joy"] },
-    { id:"q18", text:"אתה מגדיר את עצמך בעל ביטחון עצמי גבוה?",      amutas:["mda","fire","special"] },
-    { id:"q19", text:"האם יש לך אחים קטנים?",                        amutas:["hand","special"] },
-    { id:"q20", text:"האם אתה מסוגל להתחייב לזמן ממושך?",            amutas:["mda","fire","hand"] },
-    { id:"q21", text:"אתה ספונטני?",                                  amutas:["joy"] },
-    { id:"q22", text:"האם אתה יודע לתפקד טוב שאין ודאות מוחלטת?",amutas:["mda","fire","special"] },
-    { id:"q23", text:"האם אתה רואה ערך בעשייה לטווח ארוך?",          amutas:["hand","special"] },
-    { id:"q24", text:"חשוב לך לדעת העשייה שלך משנה?",               amutas:["yedidim","mda","hand"] },
-    { id:"q25", text:"האם אתה רואה את עצמך כמודל לחיקוי?",           amutas:["mda","yedidim"] },
-    { id:"q26", text:"האם תוכל להתנדב במקום שבו לא דווקא יכירו לך תודה?",  amutas:["mda","fire","special"] }
-  ];
- 
+/* ========================================
+   3) שאלות
+   ======================================== */
+const questions = [
+  { id:"q1",  text:"האם אתה אוהב לעבוד עם הרבה אנשים ביחד?",      amutas:["mda","special","joy"] },
+  { id:"q2",  text:"אתה בדרך כלל זמין בווצאפ?",                    amutas:["mda","fire","yedidim"] },
+  { id:"q3",  text:"יש לך ניסיון עם צרכים מיוחדים (מכל סוג)?",     amutas:["hand","joy","special"] },
+  { id:"q4",  text:"אתה מסוגל לעבוד תחת לחץ?",                     amutas:["mda","fire","yedidim"] },
+  { id:"q5",  text:"אתה טיפוס שאוהב להוציא אנרגיות?",              amutas:["hand","joy","special"] },
+  { id:"q6",  text:"האם אתה מתנדב כבר במקום כלשהו?",               amutas:["mda","fire","yedidim"] },
+  { id:"q7",  text:"אתה מוזיקאי או סתם אוהב לשיר ולנגן?",           amutas:["joy","hand","special"] },
+  { id:"q8",  text:"אתה מבלה הרבה זמן בנסיעות?",                   amutas:["yedidim"] },
+  { id:"q9",  text:"יש לך רישיון נהיגה?",                          amutas:["mda","yedidim"] },
+  { id:"q10", text:"האם אתה פנוי בשבתות?",                         amutas:["mda","yedidim"] },
+  { id:"q11", text:"האם תוכל להקדיש יום ספציפי בשבוע להתנדבות?",   amutas:["joy","hand","special"] },
+  { id:"q12", text:"אתה אוהב אתגרים?",                              amutas:["mda","yedidim","special"] },
+  { id:"q13", text:"האם אתה מסוגל להיות שמח גם במצבים עצובים?",    amutas:["mda","yedidim"] },
+  { id:"q14", text:"מסוגל לעבוד מכל הלב בלי לצפות לתמורה?",        amutas:["special","yedidim","joy","hand"] },
+  { id:"q15", text:"האם אתה מרגיש שאתה יכול להשפיע על אדם אחר?",   amutas:["joy","hand","special"] },
+  { id:"q16", text:"האם תהיה מוכן לעבור הכשרה פיזית ומעשית?",      amutas:["mda","yedidim","fire"] },
+  { id:"q17", text:"אתה אדם יצירתי?",                               amutas:["mda","special","joy"] },
+  { id:"q18", text:"אתה מגדיר את עצמך בעל ביטחון עצמי גבוה?",      amutas:["mda","fire","special"] },
+  { id:"q19", text:"האם יש לך אחים קטנים?",                        amutas:["hand","special"] },
+  { id:"q20", text:"האם אתה מסוגל להתחייב לזמן ממושך?",            amutas:["mda","fire","hand"] },
+  { id:"q21", text:"אתה ספונטני?",                                  amutas:["joy"] },
+  { id:"q22", text:"האם אתה יודע לתפקד טוב שאין ודאות מוחלטת?",    amutas:["mda","fire","special"] },
+  { id:"q23", text:"האם אתה רואה ערך בעשייה לטווח ארוך?",          amutas:["hand","special"] },
+  { id:"q24", text:"חשוב לך לדעת שהעשייה שלך משנה?",               amutas:["yedidim","mda","hand"] },
+  { id:"q25", text:"האם אתה רואה את עצמך כמודל לחיקוי?",           amutas:["mda","yedidim"] },
+  { id:"q26", text:"האם תוכל להתנדב במקום שבו לא דווקא יכירו לך תודה?",  amutas:["mda","fire","special"] }
+];
 
-  /* ========================================
-     4) נתוני עמותות
-     ======================================== */
-     const AMUTA_DATA = {
+/* ========================================
+   4) נתוני עמותות
+   ======================================== */
+const AMUTA_DATA = {
   mda: {
     name: "מד\"א – מגן דוד אדום",
     icon: "fa-ambulance",
     description: "זה לא משנה אם אתה נוער או בוגר יותר – בסופו של דבר, שניכם מצילים חיים. ללכת לישון בהרגשה שהיום הצלת חיים זו הרגשה מדהימה. ההתנדבות במד\"א נותנת לך פרופורציות וערך אמיתי לחיים, והיא מומלצת לכל אחד שמסוגל להתמודד עם מצבים מורכבים.",
     images: [
-      "https://scontent.ftlv5-1.fna.fbcdn.net/v/t39.30808-6/468321608_10161557319136708_4653121418500952521_n.png?_nc_cat=100&ccb=1-7&_nc_sid=0b6b33&_nc_ohc=XqD2e2vzEiAQ7kNvwGaEK91&_nc_oc=AdlkOf4sCMOgXdzjPSvz2mepASB6Ls9pijo19WGSmdYTH59GtlI4YtHzGcE07QNNMN4&_nc_zt=23&_nc_ht=scontent.ftlv5-1.fna&_nc_gid=gAOO1anqkG9qcsdHHsqQsA&oh=00_AfG4ajakisi0fGejnJDVmR8C8qaB3-gVT0b4l4g6pDs0cQ&oe=67FE1F8F",
-      "https://swords.ifmda.org.il/wp-content/uploads/2023/10/%D7%A6%D7%95%D7%95%D7%AA%D7%99-%D7%9E%D7%93%D7%90-%D7%91%D7%96%D7%99%D7%A8%D7%AA-%D7%A0%D7%A4%D7%99%D7%9C%D7%94-%D7%91%D7%90%D7%A9%D7%A7%D7%9C%D7%95%D7%9F-%D7%A6%D7%99%D7%9C%D7%95%D7%9D-%D7%AA%D7%99%D7%A2%D7%95%D7%93-%D7%9E%D7%91%D7%A6%D7%A2%D7%99-%D7%9E%D7%93%D7%90-5519-2-1024x768.jpg"
+      "https://scontent.ftlv5-1.fna.fbcdn.net/v/t39.30808-6/468321608_10161557319136708_4653121418500952521_n.png?_nc_cat=100&ccb=1-7&_nc_sid=0b6b33&_nc_ohc=XqD2e2vzEiAQ&_nc_ht=scontent.ftlv5-1.fna&oh=00_AfG4ajakisi0fGejnJDVmR8C8qaB3-gVT0b4l4g6pDs0cQ&oe=67FE1F8F",
+      "https://swords.ifmda.org.il/wp-content/uploads/2023/10/%D7%A6%D7%95%D7%95%D7%AA%D7%99-%D7%9E%D7%93%D7%90-%D7%91%D7%96%D7%99%D7%A8%D7%AA-%D7%A0%D7%A4%D7%99%D7%9C%D7%94-%D7%91%D7%90%D7%A9%D7%A7%D7%9C%D7%95%D7%9F-1024x768.jpg"
     ]
   },
   fire: {
@@ -371,8 +342,8 @@ function convertDriveLink(url) {
     icon: "fa-smile",
     description: "דמיינו שאתם חס ושלום בבית חולים, מביטים על הקירות ושוקעים בצער ובכאב. ופתאום מישהו נכנס ומנגן לכם שיר שאתם אוהבים. ההתנדבות הזו היא הזדמנות להקל על חולים, לתת להם תקווה, חיוך והפוגה מהכאב. ההרגשה שתצאו איתה היא סיפוק ענק שאין לו תחליף.",
     images: [
-      "https://drive.google.com/file/d/1NTZPoWO-XhsYPkCppJLA4teW-xDOFsE5/view?t=4",
-      "https://drive.google.com/file/d/1GWp3xqUVcnTgo8mOSdF5OlZQQtwBx--B/view?t=3"
+      "https://drive.google.com/file/d/1NTZPoWO-XhsYPkCppJLA4teW-xDOFsE5/preview",
+      "https://drive.google.com/file/d/1GWp3xqUVcnTgo8mOSdF5OlZQQtwBx--B/preview"
     ]
   },
   hand: {
@@ -380,7 +351,7 @@ function convertDriveLink(url) {
     icon: "fa-hand-holding-heart",
     description: "לרובנו יש אחים גדולים וקטנים, אך יש ילדים שאין להם דמות כזו בחיים. להושיט יד מחבר אתכם למשפחה שזקוקה לכם כאחים גדולים: לצאת עם הילד לטיולים, לעזור בשיעורי בית או סתם לשוחח על החיים. זו התנדבות לא פשוטה, אך לראות את הילד מתפתח ומקבל כלים לחיים – זו הרגשה מספקת וייחודית.",
     images: [
-      "https://scontent.ftlv5-1.fna.fbcdn.net/v/t39.30808-6/488669456_1109292477901246_1785003350776734070_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_ohc=q-d5K3o1TP4Q7kNvwE3rzc2&_nc_oc=Adkd8X7I4EZNyLWyxpGxxAbuThk5WKd1p8WSZE_6vX2_knuHxE0S9MFwZ-Fx1cSGqpM&_nc_zt=23&_nc_ht=scontent.ftlv5-1.fna&_nc_gid=i-cx50GlYMtFHol7MlHUKA&oh=00_AfGroO59OaDALFvwju_ZO7-9sIEUp5LtSu8j-nIg-v4_wA&oe=681D2632",
+      "https://scontent.ftlv5-1.fna.fbcdn.net/v/t39.30808-6/488669456_1109292477901246_1785003350776734070_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_ohc=q-d5K3o1TP4&_nc_ht=scontent.ftlv5-1.fna&oh=00_AfGroO59OaDALFvwju_ZO7-9sIEUp5LtSu8j-nIg-v4_wA&oe=681D2632",
       "https://l-yad.org/wp-content/uploads/2025/01/074A1584-2-2048x1365.jpg"
     ]
   },
@@ -390,210 +361,197 @@ function convertDriveLink(url) {
     description: "לראות אדם שמתמודד עם מוגבלות פיזית קשה ובכל זאת מצליח לעשות משהו מדהים עם חייו – זו חוויה שמלמדת המון. ההתנדבות עם אנשים עם צרכים מיוחדים תפתח בכם סבלנות, אכפתיות ונתינה עצומה. אי אפשר לתאר במילים את הסיפוק שתרגישו כשתראו אותם מחייכים ומצליחים בזכותכם.",
     images: [
       "https://www.metar.muni.il/PublishingImages/%D7%91%D7%A0%D7%99%20%D7%A2%D7%A7%D7%99%D7%91%D7%90.jfif",
-      "https://drive.google.com/file/d/1GrzsQ5FlYUlI7exCSPzp8tFz2341oWc5/view?t=4"
+      "https://drive.google.com/file/d/1GrzsQ5FlYUlI7exCSPzp8tFz2341oWc5/preview"
     ]
   }
 };
 
+/* ========================================
+   5) משתני ניהול
+   ======================================== */
+let currentQuestionIndex = 0;
+const userAnswers = {};
+questions.forEach(q => userAnswers[q.id] = {answer:null, answered:false});
+const totalQuestions = questions.length;
+let allAmutaResults = [];
 
-  /* ========================================
-     5) משתני ניהול
-     ======================================== */
-  let currentQuestionIndex = 0;
-  const userAnswers = {};
-  questions.forEach(q => userAnswers[q.id] = {answer:null, answered:false});
-  const totalQuestions = questions.length;
+/* === DOM refs === */
+const introContainer      = document.getElementById("intro-container");
+const questionContainer   = document.getElementById("question-container");
+const resultsContainer    = document.getElementById("results-container");
+const startQuizBtn        = document.getElementById("startQuizBtn");
+const questionText        = document.getElementById("question-text");
+const progressBar         = document.getElementById("progress-bar");
+const progressIndicator   = document.getElementById("progress-indicator");
+const backBtn             = document.getElementById("backBtn");
+const skipBtn             = document.getElementById("skipBtn");
+const answerBtns          = document.querySelectorAll(".answer-btn");
+const recommendedAmutasDiv= document.getElementById("recommended-amutas");
+const whatsappBtn         = document.getElementById("whatsappBtn");
+const readMoreBtn         = document.getElementById("readMoreBtn");
+const moreContent         = document.getElementById("moreContent");
+const showAllBtn          = document.getElementById("showAllBtn");
 
-  /* === DOM refs === */
-  const introContainer      = document.getElementById("intro-container");
-  const questionContainer   = document.getElementById("question-container");
-  const resultsContainer    = document.getElementById("results-container");
-  const startQuizBtn        = document.getElementById("startQuizBtn");
-  const questionText        = document.getElementById("question-text");
-  const progressBar         = document.getElementById("progress-bar");
-  const progressIndicator   = document.getElementById("progress-indicator");
-  const backBtn             = document.getElementById("backBtn");
-  const skipBtn             = document.getElementById("skipBtn");
-  const answerBtns          = document.querySelectorAll(".answer-btn");
-  const recommendedAmutasDiv= document.getElementById("recommended-amutas");
-  const whatsappBtn         = document.getElementById("whatsappBtn");
-  const readMoreBtn         = document.getElementById("readMoreBtn");
-  const moreContent         = document.getElementById("moreContent");
+/* ========================================
+   6) גלריה כללית – קרא עוד
+   ======================================== */
+readMoreBtn.addEventListener("click", () => {
+  moreContent.classList.toggle("hidden");
+  readMoreBtn.textContent = moreContent.classList.contains("hidden") ? "מידע נוסף" : "הסתר";
+});
 
-  /* ========================================
-     6) גלריה כללית – קרא עוד
-     ======================================== */
-  readMoreBtn.addEventListener("click", () => {
-    moreContent.classList.toggle("hidden");
-    readMoreBtn.textContent = moreContent.classList.contains("hidden") ? "לעוד פרטים" : "הסתר";
+/* ========================================
+   7) זרימת שאלון
+   ======================================== */
+function showQuiz() {
+  introContainer.classList.add("hidden");
+  questionContainer.classList.remove("hidden");
+  renderQuestion();
+}
+function renderQuestion() {
+  if (currentQuestionIndex >= totalQuestions) { showResults(); return; }
+  const q = questions[currentQuestionIndex];
+  questionText.textContent = q.text;
+  progressIndicator.textContent = `שאלה ${currentQuestionIndex + 1} מתוך ${totalQuestions}`;
+  backBtn.style.visibility = currentQuestionIndex ? "visible" : "hidden";
+  updateProgressBar();
+}
+function updateProgressBar() {
+  progressBar.style.width = ((currentQuestionIndex+1)/totalQuestions)*100 + "%";
+}
+function nextQuestion(val=null) {
+  if (val) {
+    const id = questions[currentQuestionIndex].id;
+    userAnswers[id] = {answer:val, answered:true};
+  }
+  currentQuestionIndex++;
+  currentQuestionIndex < totalQuestions ? renderQuestion() : showResults();
+}
+function previousQuestion() {
+  if (currentQuestionIndex) { currentQuestionIndex--; renderQuestion(); }
+}
+
+/* ========================================
+   8) תוצאות
+   ======================================== */
+function showResults() {
+  questionContainer.classList.add("hidden");
+  resultsContainer.classList.remove("hidden");
+
+  /* חישוב ניקוד */
+  const amutaScores = Object.fromEntries(
+    Object.keys(AMUTA_DATA).map(k => [k, {score:0, max:0}])
+  );
+
+  questions.forEach(q => {
+    const ans = userAnswers[q.id];
+    if (!ans.answered) return;
+    const pts = ans.answer==="yes" ? 1 : ans.answer==="maybe" ? 0.5 : 0;
+    q.amutas.forEach(k => {
+      amutaScores[k].score += pts;
+      amutaScores[k].max   += 1;
+    });
   });
 
-  /* ========================================
-     7) זרימת שאלון
-     ======================================== */
-  function showQuiz() {
-    introContainer.classList.add("hidden");
-    questionContainer.classList.remove("hidden");
-    renderQuestion();
-  }
-  function renderQuestion() {
-    if (currentQuestionIndex >= totalQuestions) { showResults(); return; }
-    const q = questions[currentQuestionIndex];
-    questionText.textContent = q.text;
-    progressIndicator.textContent = `שאלה ${currentQuestionIndex + 1} מתוך ${totalQuestions}`;
-    backBtn.style.visibility = currentQuestionIndex ? "visible" : "hidden";
-    updateProgressBar();
-  }
-  function updateProgressBar() {
-    progressBar.style.width = ((currentQuestionIndex+1)/totalQuestions)*100 + "%";
-  }
-  function nextQuestion(val=null) {
-    if (val) {
-      const id = questions[currentQuestionIndex].id;
-      userAnswers[id] = {answer:val, answered:true};
-    }
-    currentQuestionIndex++;
-    currentQuestionIndex < totalQuestions ? renderQuestion() : showResults();
-  }
-  function previousQuestion() {
-    if (currentQuestionIndex) { currentQuestionIndex--; renderQuestion(); }
-  }
+  allAmutaResults = Object.keys(amutaScores)
+    .map(k => {
+      const {score, max} = amutaScores[k];
+      return { amKey:k,
+               name:AMUTA_DATA[k].name,
+               icon:AMUTA_DATA[k].icon,
+               ratio:max ? (score/max)*100 : 0 };
+    })
+    .sort((a,b) => b.ratio - a.ratio);
 
-  /* ========================================
-     8) תוצאות
-     ======================================== */
-  function showResults() {
-    questionContainer.classList.add("hidden");
-    resultsContainer.classList.remove("hidden");
+  createPieChart(allAmutaResults);
+  displayRecommendedAmutas(allAmutaResults.slice(0,3));
+}
 
-    /* חישוב ניקוד */
-    const amutaScores = Object.fromEntries(
-      Object.keys(AMUTA_DATA).map(k => [k, {score:0, max:0}])
-    );
-
-    questions.forEach(q => {
-      const ans = userAnswers[q.id];
-      if (!ans.answered) return;
-      const pts = ans.answer==="yes" ? 1 : ans.answer==="maybe" ? 0.5 : 0;
-      q.amutas.forEach(k => {
-        if (!amutaScores[k]) return;   // בטיחות
-        amutaScores[k].score += pts;
-        amutaScores[k].max   += 1;
-      });
-    });
-
-    const sorted = Object.keys(amutaScores)
-      .filter(k => AMUTA_DATA[k])        // סינון מפתחות לא‑תקינים
-      .map(k => {
-        const {score, max} = amutaScores[k];
-        return {
-          amKey:k,
-          name:AMUTA_DATA[k].name,
-          icon:AMUTA_DATA[k].icon,
-          ratio:max ? (score/max)*100 : 0
-        };
-      })
-      .sort((a,b) => b.ratio - a.ratio);
-
-    createPieChart(sorted);
-    displayRecommendedAmutas(sorted.slice(0,3));
-  }
-
-  function createPieChart(arr) {
-    const ctx = document.getElementById("pieChart").getContext("2d");
-    new Chart(ctx, {
-      type:"pie",
-      data:{
-        labels:arr.map(a=>a.name),
-        datasets:[{
-          data:arr.map(a=>a.ratio),
-          backgroundColor:["#2E93FA","#66DA26","#E91E63","#FF9800","#8B5CF6","#EC4899"],
-          borderWidth:1
-        }]
-      },
-      options:{
-        responsive:true, maintainAspectRatio:false,
-        plugins:{
-          legend:{position:'bottom', rtl:true},
-          tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw.toFixed(1)}% התאמה`}}
-        }
+function createPieChart(arr) {
+  const ctx = document.getElementById("pieChart").getContext("2d");
+  new Chart(ctx, {
+    type:"pie",
+    data:{
+      labels:arr.map(a=>a.name),
+      datasets:[{
+        data:arr.map(a=>a.ratio),
+        backgroundColor:["#2E93FA","#66DA26","#E91E63","#FF9800","#8B5CF6","#EC4899"],
+        borderWidth:1
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom', rtl:true},
+        tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw.toFixed(1)}% התאמה`}}
       }
-    });
-  }
+    }
+  });
+}
 
-  function displayRecommendedAmutas(arr) {
-    recommendedAmutasDiv.innerHTML = "";
-    arr.forEach(a=>{
-      const ratioStr = a.ratio.toFixed(1);
-      const gid = "gallery-"+a.amKey;
-      const card = document.createElement("div");
-      card.className = "bg-blue-50 rounded-lg p-4 border border-blue-200";
-      card.innerHTML = `
-  <div class="flex items-start gap-4">
-    <!-- אייקון מעוגל -->
-    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center text-white text-2xl">
-      <i class="fas ${a.icon}"></i>
-    </div>
+function displayRecommendedAmutas(arr) {
+  recommendedAmutasDiv.innerHTML = "";
+  arr.forEach(a=>{
+    const ratioStr = a.ratio.toFixed(1);
+    const gid = "gallery-"+a.amKey;
+    const card = document.createElement("div");
+    card.className = "bg-blue-50 rounded-lg p-4 border border-blue-200";
+    card.innerHTML = `
+      <div class="flex items-start gap-4">
+        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center text-white text-2xl">
+          <i class="fas ${a.icon}"></i>
+        </div>
+        <div class="flex-1 space-y-2">
+          <h4 class="font-bold text-lg text-blue-800">${a.name}</h4>
+          <span class="inline-block text-xs font-bold px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+            ${ratioStr}% התאמה
+          </span>
+          <p class="text-sm text-gray-800 leading-relaxed">
+            ${(() => {
+              const firstSentence = AMUTA_DATA[a.amKey].description.split(".")[0] + ".";
+              const rest = AMUTA_DATA[a.amKey].description.replace(firstSentence, "").trim();
+              return `<span class="font-semibold text-blue-900">${firstSentence}</span> ${rest}`;
+            })()}
+          </p>
+          <button class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-semibold"
+                  onclick="toggleAmutaGallery('${gid}')">
+            לתמונות וסרטונים
+          </button>
+          <div id="${gid}" class="amuta-gallery hidden"></div>
+        </div>
+      </div>`;
+    recommendedAmutasDiv.appendChild(card);
 
-    <!-- גוף הכרטיס -->
-    <div class="flex-1 space-y-2">
-      <!-- כותרת -->
-      <h4 class="font-bold text-lg text-blue-800">${a.name}</h4>
+    const galDiv = card.querySelector(`#${gid}`);
+    AMUTA_DATA[a.amKey].images.forEach(u=>galDiv.appendChild(createMediaElement(u)));
+  });
+}
+window.toggleAmutaGallery = id => document.getElementById(id)?.classList.toggle("hidden");
 
-      <!-- תג אחוז -->
-      <span class="inline-block text-xs font-bold px-2 py-1 rounded-full bg-blue-100 text-blue-700">
-        ${ratioStr}% התאמה
-      </span>
-
-      <!-- תיאור משופר -->
-      <p class="text-sm text-gray-800 leading-relaxed">
-        ${
-          // הופך את המשפט הראשון לבולט, ואת השאר לפסקה חדשה
-          (() => {
-            const firstSentence = AMUTA_DATA[a.amKey].description.split(".")[0] + ".";
-            const rest = AMUTA_DATA[a.amKey].description.replace(firstSentence, "").trim();
-            return `<span class="font-semibold text-blue-900">${firstSentence}</span> ${rest}`;
-          })()
-        }
-      </p>
-
-      <!-- כפתור קרא‑עוד + גלריה -->
-      <button
-        class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-semibold"
-        onclick="toggleAmutaGallery('${gid}')">
-        לתמונות וסרטונים
-      </button>
-
-      <div id="${gid}" class="amuta-gallery hidden"></div>
-    </div>
-  </div>`;
-
-
-      recommendedAmutasDiv.appendChild(card);
-
-      const galDiv = card.querySelector(`#${gid}`);
-      AMUTA_DATA[a.amKey].images.forEach(u=>galDiv.appendChild(createMediaElement(u)));
-    });
-  }
-  window.toggleAmutaGallery = id => document.getElementById(id)?.classList.toggle("hidden");
-
-  /* 9) כפתור WhatsApp
-   =========================== */
+/* ========================================
+   9) כפתור WhatsApp
+   ======================================== */
 whatsappBtn.addEventListener("click", () => {
   const phone   = "972508787826";
   const message = "היי, מילאתי את השאלון שלך ואשמח לשמוע עוד פרטים לגבי ההתנדבות";
-  const url     = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank");
+  window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`, "_blank");
 });
 
+/* ========================================
+   10) כפתור “לכל המקומות באתר”
+   ======================================== */
+showAllBtn.addEventListener("click", () => {
+  displayRecommendedAmutas(allAmutaResults);
+  showAllBtn.classList.add("hidden");            // מסתיר את הכפתור לאחר הלחיצה
+});
 
-  /* ========================================
-     10) מאזיני כפתורים
-     ======================================== */
-  startQuizBtn.addEventListener("click",showQuiz);
-  answerBtns.forEach(b=>b.addEventListener("click",()=>nextQuestion(b.dataset.value)));
-  skipBtn.addEventListener("click", ()=>nextQuestion());
-  backBtn.addEventListener("click", previousQuestion);
-  </script>
+/* ========================================
+   11) מאזיני כפתורים
+   ======================================== */
+startQuizBtn.addEventListener("click",showQuiz);
+answerBtns.forEach(b=>b.addEventListener("click",()=>nextQuestion(b.dataset.value)));
+skipBtn.addEventListener("click", ()=>nextQuestion());
+backBtn.addEventListener("click", previousQuestion);
+</script>
 </body>
 </html>
