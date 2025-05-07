@@ -177,50 +177,57 @@ document.addEventListener("dblclick", e => e.preventDefault());
 /* ========================================
    1) קאונטר מבקרים (CounterAPI)
    ======================================== */
-(function() {
+   <!-- Visitor Counter – improved -->
+(function () {
   const BASE = "https://api.counterapi.dev/v1";
-  const NS = "matchgood1";
+  const NS   = "matchgood1";
   const NAME = "visits";
+  const REFRESH_MS = 60_000;          // רענון כל 60 שניות
+  const LS_KEY = "matchgood1-counter";
 
-  async function updateCounter(doIncrement) {
+  /** עדכון מונה – @param {boolean} inc העלאה? */
+  async function updateCounter(inc = false) {
+    const endpoint = inc
+      ? `${BASE}/${NS}/${NAME}/up`
+      : `${BASE}/${NS}/${NAME}?t=${Date.now()}`; // cache‑buster
+
     try {
-      const endpoint = doIncrement
-        ? `${BASE}/${NS}/${NAME}/up`
-        : `${BASE}/${NS}/${NAME}?t=${Date.now()}`;
+      const res  = await fetch(endpoint, { headers: { Accept: "application/json" }, cache: "no-cache" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || res.status);
 
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        cache: 'no-cache',
-        headers: { 'Accept': 'application/json' }
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || response.status);
-
-      const counterElement = document.getElementById('counter-value');
-      if (counterElement) {
-        counterElement.textContent = data.count;
-        counterElement.style.animation = 'pop 0.5s ease';
-      }
-
-    } catch (error) {
-      console.error('CounterAPI Error:', error);
-      const counterElement = document.getElementById('counter-value');
-      if (counterElement) {
-        counterElement.innerHTML = `<span style="color:red">Error</span> <button onclick="location.reload()">Retry</button>`;
-      }
+      renderCount(data.count);
+      localStorage.setItem(LS_KEY, data.count);   // שמירה לערך עתידי
+    } catch (err) {
+      console.error("CounterAPI:", err);
+      renderCount("—");                           // מקף מפריד במקום 0
     }
   }
 
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes pop { 0%{transform:scale(1);} 50%{transform:scale(1.2);} 100%{transform:scale(1);} }
-  `;
+  /** הדפסת הערך עם אנימציה */
+  function renderCount(val) {
+    const el = document.getElementById("counter-value");
+    if (!el) return;
+    el.textContent = val;
+    el.style.animation = "pop .5s ease";
+  }
+
+  /* === עיצוב אנימציה === */
+  const style = document.createElement("style");
+  style.textContent = `@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}`;
   document.head.appendChild(style);
 
-  document.addEventListener('DOMContentLoaded', () => {
+  /* === הפעלה === */
+  document.addEventListener("DOMContentLoaded", () => {
+    // תצוגת ערך אחרון מה‑localStorage בזמן שה‑fetch רץ
+    const cached = localStorage.getItem(LS_KEY);
+    if (cached) renderCount(cached);
+
+    // קריאה ראשונה – מעלה את המונה
     updateCounter(true);
-    setInterval(() => updateCounter(false), 15000);
+
+    // רענונים שוטפים (ללא העלאה)
+    setInterval(() => updateCounter(false), REFRESH_MS);
   });
 })();
 
