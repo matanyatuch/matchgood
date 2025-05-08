@@ -178,57 +178,51 @@ document.addEventListener("dblclick", e => e.preventDefault());
 /* ========================================
    1) קאונטר מבקרים (CounterAPI) מתוקן
    ======================================== */
-   (function () {
-  const BASE = "https://api.countapi.xyz"; // שינינו לספק אמין יותר
-  const NS = "matchgood1";
-  const NAME = "visits";
-  const REFRESH_MS = 60_000;
-  const LS_KEY = "matchgood1-counter";
+   <!-- קאונטר מבקרים -->
+<div class="visitor-counter">
+  מספר המבקרים באתר עד כה: <span id="counter-value">0</span>
+</div>
 
-  /** עדכון מונה */
-  async function updateCounter(inc = false) {
-    const endpoint = inc
-      ? `${BASE}/hit/${NS}/${NAME}` // נקודת קצה חדשה לעדכון
-      : `${BASE}/get/${NS}/${NAME}?t=${Date.now()}`;
+document.addEventListener('DOMContentLoaded', function() {
+  // הגדרות אישיות שלך
+  const COUNTER_ID = '33671ad4-a966-4a52-b48f-56c92d10a678'; // ID מהתגית שצירפת
+  const LS_KEY = 'visitor-counter-fallback';
 
-    try {
-      const res = await fetch(endpoint, { cache: "no-cache" });
-      const data = await res.json();
-      if (!res.ok || data.status === 0) throw new Error(data.error || "שגיאה בספירה");
-
-      renderCount(data.value); // השתמשנו ב-value במקום count
-      localStorage.setItem(LS_KEY, data.value);
-    } catch (err) {
-      console.error("CounterAPI:", err);
-      const cached = localStorage.getItem(LS_KEY);
-      renderCount(cached || "0"); // הצג ערך שמור או 0 אם אין
-    }
+  // פונקציית עזר לעדכון תצוגה
+  function updateDisplay(count) {
+    const el = document.getElementById('counter-value');
+    if(!el) return;
+    
+    el.textContent = count.toLocaleString();
+    el.style.animation = 'pop 0.5s ease'; // אנימציה מהקוד המקורי
   }
 
-  /** הצגת ערך עם אנימציה */
-  function renderCount(val) {
-    const el = document.getElementById("counter-value");
-    if (!el) return;
-    el.textContent = val.toLocaleString(); // עיצוב מספר
-    el.style.animation = "pop .5s ease";
-  }
+  // ניסיון טעינת נתונים מ-counter.dev
+  fetch(`https://counter.dev/api/counters/${COUNTER_ID}`)
+    .then(res => res.json())
+    .then(data => {
+      updateDisplay(data.count);
+      localStorage.setItem(LS_KEY, data.count);
+    })
+    .catch(err => {
+      console.error('Counter.dev error:', err);
+      const cached = localStorage.getItem(LS_KEY) || 0;
+      updateDisplay(cached);
+    });
 
-  /* הוספת אנימציה */
-  const style = document.createElement("style");
-  style.textContent = `@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.25); } 100% { transform: scale(1); } }`;
-  document.head.appendChild(style);
+  // רענון כל 60 שניות (אופציונלי)
+  setInterval(() => {
+    fetch(`https://counter.dev/api/counters/${COUNTER_ID}`)
+      .then(res => res.json())
+      .then(data => updateDisplay(data.count))
+  }, 60000);
+});
 
-  /* הפעלת הקאונטר */
-  document.addEventListener("DOMContentLoaded", () => {
-    const cached = localStorage.getItem(LS_KEY);
-    renderCount(cached || "0"); // הצג ערך התחלתי מיד
-
-    updateCounter(true); // עדכן בספירה
-
-    setInterval(() => updateCounter(false), REFRESH_MS);
-  });
-})();
-
+// אנימציה מהקוד המקורי
+const style = document.createElement('style');
+style.textContent = `@keyframes pop { 0% {transform:scale(1)} 50% {transform:scale(1.25)} 100% {transform:scale(1)} }`;
+document.head.appendChild(style);
+</script>
 /* ========================================
    2) פונקציות מדיה (YouTube / Drive / תמונות)
    ======================================== */
