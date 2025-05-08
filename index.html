@@ -46,11 +46,10 @@
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6">
 
-  html
-<!-- קאונטר מבקרים -->
-<div class="visitor-counter" style="text-align: center; padding: 1rem; font-size: 1.2em;">
-  מספר המבקרים באתר עד כה: <span id="counter-value" style="font-weight: bold; color: #2ecc71;">0</span>
-</div>
+  <!-- קאונטר מבקרים -->
+  <div class="visitor-counter">
+   מספר המבקרים באתר עד כה: <span id="counter-value">0</span>
+  </div>
 
 <!-- ====== Intro ====== -->
 <div id="intro-container" class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-8 mb-6 border-4 border-blue-700">
@@ -176,49 +175,62 @@
 document.addEventListener("dblclick", e => e.preventDefault());
 
 /* ========================================
-   1) קאונטר מבקרים (CounterAPI) מתוקן
+   1) קאונטר מבקרים (CounterAPI)
    ======================================== */
+   <!-- Visitor Counter – improved -->
+(function () {
+  const BASE = "https://api.counterapi.dev/v1";
+  const NS   = "matchgood1";
+  const NAME = "visits";
+  const REFRESH_MS = 60_000;          // רענון כל 60 שניות
+  const LS_KEY = "matchgood1-counter";
 
-document.addEventListener('DOMContentLoaded', function() {
-  // הגדרות אישיות שלך
-  const COUNTER_ID = '33671ad4-a966-4a52-b48f-56c92d10a678'; // ID מהתגית שצירפת
-  const LS_KEY = 'visitor-counter-fallback';
+  /** עדכון מונה – @param {boolean} inc העלאה? */
+  async function updateCounter(inc = false) {
+    const endpoint = inc
+      ? `${BASE}/${NS}/${NAME}/up`
+      : `${BASE}/${NS}/${NAME}?t=${Date.now()}`; // cache‑buster
 
-  // פונקציית עזר לעדכון תצוגה
-  function updateDisplay(count) {
-    const el = document.getElementById('counter-value');
-    if(!el) return;
-    
-    el.textContent = count.toLocaleString();
-    el.style.animation = 'pop 0.5s ease'; // אנימציה מהקוד המקורי
+    try {
+      const res  = await fetch(endpoint, { headers: { Accept: "application/json" }, cache: "no-cache" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || res.status);
+
+      renderCount(data.count);
+      localStorage.setItem(LS_KEY, data.count);   // שמירה לערך עתידי
+    } catch (err) {
+      console.error("CounterAPI:", err);
+      renderCount("—");                           // מקף מפריד במקום 0
+    }
   }
 
-  // ניסיון טעינת נתונים מ-counter.dev
-  fetch(`https://counter.dev/api/counters/${COUNTER_ID}`)
-    .then(res => res.json())
-    .then(data => {
-      updateDisplay(data.count);
-      localStorage.setItem(LS_KEY, data.count);
-    })
-    .catch(err => {
-      console.error('Counter.dev error:', err);
-      const cached = localStorage.getItem(LS_KEY) || 0;
-      updateDisplay(cached);
-    });
+  /** הדפסת הערך עם אנימציה */
+  function renderCount(val) {
+    const el = document.getElementById("counter-value");
+    if (!el) return;
+    el.textContent = val;
+    el.style.animation = "pop .5s ease";
+  }
 
-  // רענון כל 60 שניות (אופציונלי)
-  setInterval(() => {
-    fetch(`https://counter.dev/api/counters/${COUNTER_ID}`)
-      .then(res => res.json())
-      .then(data => updateDisplay(data.count))
-  }, 60000);
-});
+  /* === עיצוב אנימציה === */
+  const style = document.createElement("style");
+  style.textContent = `@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}`;
+  document.head.appendChild(style);
 
-// אנימציה מהקוד המקורי
-const style = document.createElement('style');
-style.textContent = `@keyframes pop { 0% {transform:scale(1)} 50% {transform:scale(1.25)} 100% {transform:scale(1)} }`;
-document.head.appendChild(style);
-</script>
+  /* === הפעלה === */
+  document.addEventListener("DOMContentLoaded", () => {
+    // תצוגת ערך אחרון מה‑localStorage בזמן שה‑fetch רץ
+    const cached = localStorage.getItem(LS_KEY);
+    if (cached) renderCount(cached);
+
+    // קריאה ראשונה – מעלה את המונה
+    updateCounter(true);
+
+    // רענונים שוטפים (ללא העלאה)
+    setInterval(() => updateCounter(false), REFRESH_MS);
+  });
+})();
+
 /* ========================================
    2) פונקציות מדיה (YouTube / Drive / תמונות)
    ======================================== */
