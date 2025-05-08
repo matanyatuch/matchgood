@@ -46,10 +46,11 @@
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6">
 
-  <!-- קאונטר מבקרים -->
-  <div class="visitor-counter">
-   מספר המבקרים באתר עד כה: <span id="counter-value">0</span>
-  </div>
+  html
+<!-- קאונטר מבקרים -->
+<div class="visitor-counter" style="text-align: center; padding: 1rem; font-size: 1.2em;">
+  מספר המבקרים באתר עד כה: <span id="counter-value" style="font-weight: bold; color: #2ecc71;">0</span>
+</div>
 
 <!-- ====== Intro ====== -->
 <div id="intro-container" class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-8 mb-6 border-4 border-blue-700">
@@ -175,58 +176,55 @@
 document.addEventListener("dblclick", e => e.preventDefault());
 
 /* ========================================
-   1) קאונטר מבקרים (CounterAPI)
+   1) קאונטר מבקרים (CounterAPI) מתוקן
    ======================================== */
-   <!-- Visitor Counter – improved -->
-(function () {
-  const BASE = "https://api.counterapi.dev/v1";
-  const NS   = "matchgood1";
+   (function () {
+  const BASE = "https://api.countapi.xyz"; // שינינו לספק אמין יותר
+  const NS = "matchgood1";
   const NAME = "visits";
-  const REFRESH_MS = 60_000;          // רענון כל 60 שניות
+  const REFRESH_MS = 60_000;
   const LS_KEY = "matchgood1-counter";
 
-  /** עדכון מונה – @param {boolean} inc העלאה? */
+  /** עדכון מונה */
   async function updateCounter(inc = false) {
     const endpoint = inc
-      ? `${BASE}/${NS}/${NAME}/up`
-      : `${BASE}/${NS}/${NAME}?t=${Date.now()}`; // cache‑buster
+      ? `${BASE}/hit/${NS}/${NAME}` // נקודת קצה חדשה לעדכון
+      : `${BASE}/get/${NS}/${NAME}?t=${Date.now()}`;
 
     try {
-      const res  = await fetch(endpoint, { headers: { Accept: "application/json" }, cache: "no-cache" });
+      const res = await fetch(endpoint, { cache: "no-cache" });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || res.status);
+      if (!res.ok || data.status === 0) throw new Error(data.error || "שגיאה בספירה");
 
-      renderCount(data.count);
-      localStorage.setItem(LS_KEY, data.count);   // שמירה לערך עתידי
+      renderCount(data.value); // השתמשנו ב-value במקום count
+      localStorage.setItem(LS_KEY, data.value);
     } catch (err) {
       console.error("CounterAPI:", err);
-      renderCount("—");                           // מקף מפריד במקום 0
+      const cached = localStorage.getItem(LS_KEY);
+      renderCount(cached || "0"); // הצג ערך שמור או 0 אם אין
     }
   }
 
-  /** הדפסת הערך עם אנימציה */
+  /** הצגת ערך עם אנימציה */
   function renderCount(val) {
     const el = document.getElementById("counter-value");
     if (!el) return;
-    el.textContent = val;
+    el.textContent = val.toLocaleString(); // עיצוב מספר
     el.style.animation = "pop .5s ease";
   }
 
-  /* === עיצוב אנימציה === */
+  /* הוספת אנימציה */
   const style = document.createElement("style");
-  style.textContent = `@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}`;
+  style.textContent = `@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.25); } 100% { transform: scale(1); } }`;
   document.head.appendChild(style);
 
-  /* === הפעלה === */
+  /* הפעלת הקאונטר */
   document.addEventListener("DOMContentLoaded", () => {
-    // תצוגת ערך אחרון מה‑localStorage בזמן שה‑fetch רץ
     const cached = localStorage.getItem(LS_KEY);
-    if (cached) renderCount(cached);
+    renderCount(cached || "0"); // הצג ערך התחלתי מיד
 
-    // קריאה ראשונה – מעלה את המונה
-    updateCounter(true);
+    updateCounter(true); // עדכן בספירה
 
-    // רענונים שוטפים (ללא העלאה)
     setInterval(() => updateCounter(false), REFRESH_MS);
   });
 })();
