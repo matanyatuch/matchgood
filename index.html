@@ -20,25 +20,38 @@
     html { direction: rtl; scroll-behavior: smooth; touch-action: manipulation; }
     body { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background-color:#F5F7FA; color:#0C1A42; }
 
-  /* מצב כהה – תיקוני קונטרסט */
-@media (prefers-color-scheme: dark) {
-  body { background-color:#1E1E1E; color:#E8E8E8; }
+    /* מצב כהה – תיקוני קונטרסט */
+    @media (prefers-color-scheme: dark) {
+      body { background-color:#1E1E1E; color:#E8E8E8; }
 
-  /* רקעים אפורים של Tailwind */
-  .bg-gray-50,
-  .bg-gray-100 { background-color:#2D3748 !important; }  /* gray-700 */
-  .bg-gray-200 { background-color:#4A5568 !important; }  /* gray-600 */
-  .hover\:bg-gray-200:hover { background-color:#4A5568 !important; }
-  .hover\:bg-gray-300:hover { background-color:#4A5568 !important; }
+      /* רקעים אפורים של Tailwind */
+      .bg-gray-50,
+      .bg-gray-100 { background-color:#2D3748 !important; }  /* gray-700 */
+      .bg-gray-200 { background-color:#4A5568 !important; }  /* gray-600 */
+      .hover\:bg-gray-200:hover { background-color:#4A5568 !important; }
+      .hover\:bg-gray-300:hover { background-color:#4A5568 !important; }
 
-  /* טקסטים כהים מדי */
-  .text-gray-600,
-  .text-gray-800 { color:#D1D5DB !important; }           /* gray-300 */
-  .visitor-counter { color:#E8E8E8 !important; }
+      /* טקסטים כהים מדי */
+      .text-gray-600,
+      .text-gray-800 { color:#D1D5DB !important; }           /* gray-300 */
+      .visitor-counter { color:#E8E8E8 !important; }
 
-  /* כפתור “לכל המקומות באתר” + דלג/חזור */
-  .text-gray-200 { color:#F7FAFC !important; }           /* gray-50 */
-}  /* ← שים לב לסוגר הזה */
+      /* כפתור “לכל המקומות באתר” + דלג/חזור */
+      .text-gray-200 { color:#F7FAFC !important; }           /* gray-50 */
+      
+      /* תיקונים לגלריה במצב כהה */
+      .amuta-gallery img,
+      .amuta-gallery video { 
+        border: 2px solid #4A5568;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      }
+      
+      /* תיקון כרטיס תוצאות במצב כהה */
+      #results-container .bg-blue-50 { 
+        background-color: #2c5282 !important; 
+        border-color: #4A5568 !important;
+      }
+    }
 
     h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
     h2 { font-size: clamp(1.2rem, 4vw, 1.5rem); }
@@ -49,12 +62,17 @@
     .visitor-counter { font-size:1rem;font-weight:600;margin-bottom:1rem;text-align:center; }
     .amuta-gallery { margin-top:.5rem; }
     .amuta-gallery.hidden { display:none; }
-    .amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe { max-width:100%;border-radius:.5rem;margin-bottom:.5rem; }
+    .amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe { 
+      max-width:100%;border-radius:.5rem;margin-bottom:.5rem;
+      background-color: white;
+    }
+    .dark .amuta-gallery img, 
+    .dark .amuta-gallery video {
+      background-color: #2D3748;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-[Assistant]">
-  <!-- 🟢 אין תגיות <body> כפולות מכאן והלאה -->
-
   <!-- קאונטר מבקרים -->
   <div class="visitor-counter">
     מספר המבקרים באתר עד כה: <span id="counter-value">670</span>
@@ -79,73 +97,68 @@
     </div>
   </div>
 
-<!-- ====== Quiz Card ====== -->
- <!-- ====== Quiz Card ====== -->
- <div id="question-container" class="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 mb-6 border-4 border-blue-700 dark:border-blue-400 hidden">
-  <!-- Progress -->
-  <div class="mb-6">
-    <div id="progress-indicator" class="text-sm font-medium text-blue-700 dark:text-blue-300 mb-1"></div>
-    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-      <div id="progress-bar" class="bg-blue-700 dark:bg-blue-400 h-2.5 rounded-full transition-all duration-300" style="width:0%"></div>
+  <!-- ====== Quiz Card ====== -->
+  <div id="question-container" class="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 mb-6 border-4 border-blue-700 dark:border-blue-400 hidden">
+    <!-- Progress -->
+    <div class="mb-6">
+      <div id="progress-indicator" class="text-sm font-medium text-blue-700 dark:text-blue-300 mb-1"></div>
+      <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+        <div id="progress-bar" class="bg-blue-700 dark:bg-blue-400 h-2.5 rounded-full transition-all duration-300" style="width:0%"></div>
+      </div>
     </div>
-  </div>
-  <!-- Question -->
-  <div id="question-card" class="text-center mb-6">
-    <h2 id="question-text" class="font-semibold mb-6 text-xl text-gray-800 dark:text-gray-200"></h2>
-    <div class="flex flex-col gap-4">
-      <button class="answer-btn border-4 border-green-500 rounded-xl bg-white dark:bg-gray-800 text-green-700 dark:text-green-300 font-semibold h-14 hover:bg-green-50 dark:hover:bg-green-900 flex items-center justify-center gap-2" data-value="yes"><i class="fas fa-check-circle text-xl"></i> כן</button>
-      <button class="answer-btn border-4 border-yellow-500 rounded-xl bg-white dark:bg-gray-800 text-yellow-700 dark:text-yellow-300 font-semibold h-14 hover:bg-yellow-50 dark:hover:bg-yellow-900 flex items-center justify-center gap-2" data-value="maybe"><i class="fas fa-question-circle text-xl"></i> בערך</button>
-      <button class="answer-btn border-4 border-red-500 rounded-xl bg-white dark:bg-gray-800 text-red-700 dark:text-red-300 font-semibold h-14 hover:bg-red-50 dark:hover:bg-red-900 flex items-center justify-center gap-2" data-value="no"><i class="fas fa-times-circle text-xl"></i> לא</button>
+    <!-- Question -->
+    <div id="question-card" class="text-center mb-6">
+      <h2 id="question-text" class="font-semibold mb-6 text-xl text-gray-800 dark:text-gray-200"></h2>
+      <div class="flex flex-col gap-4">
+        <button class="answer-btn border-4 border-green-500 rounded-xl bg-white dark:bg-gray-800 text-green-700 dark:text-green-300 font-semibold h-14 hover:bg-green-50 dark:hover:bg-green-900 flex items-center justify-center gap-2" data-value="yes"><i class="fas fa-check-circle text-xl"></i> כן</button>
+        <button class="answer-btn border-4 border-yellow-500 rounded-xl bg-white dark:bg-gray-800 text-yellow-700 dark:text-yellow-300 font-semibold h-14 hover:bg-yellow-50 dark:hover:bg-yellow-900 flex items-center justify-center gap-2" data-value="maybe"><i class="fas fa-question-circle text-xl"></i> בערך</button>
+        <button class="answer-btn border-4 border-red-500 rounded-xl bg-white dark:bg-gray-800 text-red-700 dark:text-red-300 font-semibold h-14 hover:bg-red-50 dark:hover:bg-red-900 flex items-center justify-center gap-2" data-value="no"><i class="fas fa-times-circle text-xl"></i> לא</button>
+      </div>
     </div>
-  </div>
-  <!-- Nav -->
-  <div class="flex justify-between">
-    <button id="backBtn" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg transition-colors flex items-center" style="visibility:hidden;"><i class="fas fa-arrow-left ml-2"></i> חזור</button>
-    <button id="skipBtn" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg transition-colors flex items-center">דלג <i class="fas fa-forward mr-2"></i></button>
-  </div>
-</div>
-  </div>
-
-<div id="results-container" class="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-4 border-blue-700 dark:border-blue-400 hidden">
-  <div class="text-center mb-6">
-    <i class="fas fa-chart-pie text-blue-600 dark:text-blue-400 text-5xl mb-4"></i>
-    <h2 class="text-2xl font-bold text-blue-800 dark:text-blue-200 mb-2">תוצאות השאלון שלך</h2>
-    <p class="text-gray-600 dark:text-gray-300">לפניך פילוח ההתאמה שלך לסוגי ההתנדבויות השונות</p>
-  </div>
-  <!-- Pie -->
-  <div class="mb-8">
-    <h3 class="text-lg font-semibold mb-4 text-center text-blue-800 dark:text-blue-200"><i class="fas fa-chart-pie mr-2"></i> התפלגות ההתאמה</h3>
-    <div class="flex items-center justify-center mx-auto w-[300px] h-[300px] chart-container"><canvas id="pieChart"></canvas></div>
-  </div>
-  <div class="text-center mt-4 text-lg font-semibold text-blue-800 dark:text-blue-200 mb-4">איזה בן אדם מדהים את/ה! זה המקומות שיכולים להתאים לך:</div>
-  <div id="recommended-amutas" class="space-y-4 mb-4"></div>
-  <!-- כפתור הצגת כל העמותות -->
-  <div class="text-center mt-2"><button id="showAllBtn" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-lg transition-colors text-base font-semibold">לכל המקומות באתר</button></div>
-  <div class="text-center mt-4"><button id="whatsappBtn" class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-500 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold inline-flex items-center gap-2"><i class="fab fa-whatsapp text-xl"></i> אני רוצה עוד פרטים!</button></div>
-  <div class="text-center mt-4"><button id="readMoreBtn" class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-400 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold">מידע נוסף</button></div>
-  <div class="text-center mt-4">
-   
-  </div>
-
-  <div id="moreContent" class="hidden mt-4">
-    <p class="text-center text-blue-800 font-semibold mb-2">הארגונים שמופיעים באתר שלנו</p>
-    <div class="grid grid-cols-2 gap-2">
-      <img src="https://hitnadvut.kfar-saba.muni.il/wp-content/uploads/2020/12/%D7%99%D7%93%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%A1%D7%9E%D7%9B%D7%99-%D7%99%D7%A1%D7%95%D7%93-%D7%9C%D7%95%D7%92%D7%95-%D7%A1%D7%99%D7%95%D7%A2-%D7%91%D7%93%D7%A8%D7%9B%D7%99%D7%9D-%D7%A9%D7%97%D7%95%D7%A8-2019-002.jpg" alt="ידידים" />
-      <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" alt="לשמח בבתי חולים " />
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" alt="כבאות והצלה" />
-      <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" alt="משען למרפא" />
-      <img src="https://www.patients-rights.org//webfiles/fck/image/headers/80b1ecbecd5a8429fb984c67813a51c3.jpg" alt="חברים לרפואה" />
-      <img src="https://www.mdais.org/media/1025/logojpg.png" alt="מד״א – מגן דוד אדום" />
-      <img src="https://or-michael.co.il/images/or_michael_heb.png" alt="אור מיכאל" />;
+    <!-- Nav -->
+    <div class="flex justify-between">
+      <button id="backBtn" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg transition-colors flex items-center" style="visibility:hidden;"><i class="fas fa-arrow-left ml-2"></i> חזור</button>
+      <button id="skipBtn" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg transition-colors flex items-center">דלג <i class="fas fa-forward mr-2"></i></button>
     </div>
   </div>
 
-  <div class="text-center mt-8">
-    <button onclick="location.reload()" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-semibold">
-      <i class="fas fa-redo mr-2"></i> התחלה מחדש
-    </button>
+  <div id="results-container" class="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-4 border-blue-700 dark:border-blue-400 hidden">
+    <div class="text-center mb-6">
+      <i class="fas fa-chart-pie text-blue-600 dark:text-blue-400 text-5xl mb-4"></i>
+      <h2 class="text-2xl font-bold text-blue-800 dark:text-blue-200 mb-2">תוצאות השאלון שלך</h2>
+      <p class="text-gray-600 dark:text-gray-300">לפניך פילוח ההתאמה שלך לסוגי ההתנדבויות השונות</p>
+    </div>
+    <!-- Pie -->
+    <div class="mb-8">
+      <h3 class="text-lg font-semibold mb-4 text-center text-blue-800 dark:text-blue-200"><i class="fas fa-chart-pie mr-2"></i> התפלגות ההתאמה</h3>
+      <div class="flex items-center justify-center mx-auto w-[300px] h-[300px] chart-container"><canvas id="pieChart"></canvas></div>
+    </div>
+    <div class="text-center mt-4 text-lg font-semibold text-blue-800 dark:text-blue-200 mb-4">איזה בן אדם מדהים את/ה! זה המקומות שיכולים להתאים לך:</div>
+    <div id="recommended-amutas" class="space-y-4 mb-4"></div>
+    <!-- כפתור הצגת כל העמותות -->
+    <div class="text-center mt-2"><button id="showAllBtn" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-lg transition-colors text-base font-semibold">לכל המקומות באתר</button></div>
+    <div class="text-center mt-4"><button id="whatsappBtn" class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-500 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold inline-flex items-center gap-2"><i class="fab fa-whatsapp text-xl"></i> אני רוצה עוד פרטים!</button></div>
+    <div class="text-center mt-4"><button id="readMoreBtn" class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-400 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold">מידע נוסף</button></div>
+
+    <div id="moreContent" class="hidden mt-4">
+      <p class="text-center text-blue-800 dark:text-blue-200 font-semibold mb-2">הארגונים שמופיעים באתר שלנו</p>
+      <div class="grid grid-cols-2 gap-2">
+        <img src="https://hitnadvut.kfar-saba.muni.il/wp-content/uploads/2020/12/%D7%99%D7%93%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%A1%D7%9E%D7%9B%D7%99-%D7%99%D7%A1%D7%95%D7%93-%D7%9C%D7%95%D7%92%D7%95-%D7%A1%D7%99%D7%95%D7%A2-%D7%91%D7%93%D7%A8%D7%9B%D7%99%D7%9D-%D7%A9%D7%97%D7%95%D7%A8-2019-002.jpg" alt="ידידים" />
+        <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" alt="לשמח בבתי חולים " />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" alt="כבאות והצלה" />
+        <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" alt="משען למרפא" />
+        <img src="https://www.patients-rights.org//webfiles/fck/image/headers/80b1ecbecd5a8429fb984c67813a51c3.jpg" alt="חברים לרפואה" />
+        <img src="https://www.mdais.org/media/1025/logojpg.png" alt="מד״א – מגן דוד אדום" />
+        <img src="https://or-michael.co.il/images/or_michael_heb.png" alt="אור מיכאל" />
+      </div>
+    </div>
+
+    <div class="text-center mt-8">
+      <button onclick="location.reload()" class="bg-blue-700 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors font-semibold">
+        <i class="fas fa-redo mr-2"></i> התחלה מחדש
+      </button>
+    </div>
   </div>
-</div>
 
 <script>
 /* ========================================
@@ -154,32 +167,31 @@
 document.addEventListener("dblclick", e => e.preventDefault());
 
 /* ========================================
-   1) קאונטר מבקרים (CounterAPI)
+   1) קאונטר מבקרים (CounterAPI) - גרסה משופרת
    ======================================== */
-   <!-- Visitor Counter – improved -->
 (function () {
-  const BASE = "https://api.counterapi.dev/v1";
-  const NS   = "matchgood1";
-  const NAME = "visits";
-  const REFRESH_MS = 60_000;          // רענון כל 60 שניות
   const LS_KEY = "matchgood1-counter";
+  const REFRESH_MS = 60_000; // רענון כל 60 שניות
 
-  /** עדכון מונה – @param {boolean} inc העלאה? */
-  async function updateCounter(inc = false) {
-    const endpoint = inc
-      ? `${BASE}/${NS}/${NAME}/up`
-      : `${BASE}/${NS}/${NAME}?t=${Date.now()}`; // cache‑buster
-
+  /** עדכון מונה */
+  async function updateCounter() {
     try {
-      const res  = await fetch(endpoint, { headers: { Accept: "application/json" }, cache: "no-cache" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || res.status);
-
-      renderCount(data.count);
-      localStorage.setItem(LS_KEY, data.count);   // שמירה לערך עתידי
+      // ניסיון להעלות את הספירה בשרת
+      const incRes = await fetch('https://api.countapi.xyz/hit/matchgood/visits');
+      const incData = await incRes.json();
+      
+      if (incRes.ok) {
+        renderCount(incData.value);
+        localStorage.setItem(LS_KEY, incData.value);
+      } else {
+        // אם יש בעיה, נשתמש בערך מקומי
+        const cached = localStorage.getItem(LS_KEY) || "0";
+        renderCount(cached);
+      }
     } catch (err) {
       console.error("CounterAPI:", err);
-      renderCount("—");                           // מקף מפריד במקום 0
+      const cached = localStorage.getItem(LS_KEY) || "0";
+      renderCount(cached);
     }
   }
 
@@ -198,15 +210,15 @@ document.addEventListener("dblclick", e => e.preventDefault());
 
   /* === הפעלה === */
   document.addEventListener("DOMContentLoaded", () => {
-    // תצוגת ערך אחרון מה‑localStorage בזמן שה‑fetch רץ
+    // תצוגת ערך אחרון מה-localStorage בזמן שה-fetch רץ
     const cached = localStorage.getItem(LS_KEY);
     if (cached) renderCount(cached);
 
-    // קריאה ראשונה – מעלה את המונה
-    updateCounter(true);
+    // קריאה ראשונה
+    updateCounter();
 
-    // רענונים שוטפים (ללא העלאה)
-    setInterval(() => updateCounter(false), REFRESH_MS);
+    // רענונים שוטפים
+    setInterval(updateCounter, REFRESH_MS);
   });
 })();
 
@@ -246,11 +258,13 @@ function createMediaElement(url) {
   img.src = url;
   return img;
 }
+
 function convertYoutubeLink(url) {
   if (url.includes("youtu.be/")) return "https://www.youtube.com/embed/" + url.split("youtu.be/")[1];
   if (url.includes("watch?v=")) return "https://www.youtube.com/embed/" + url.split("watch?v=")[1].split("&")[0];
   return url;
 }
+
 function convertDriveLink(url) {
   let fileId = "";
   if (url.includes("/d/")) fileId = url.split("/d/")[1].split("/")[0];
@@ -394,6 +408,7 @@ function showQuiz() {
   questionContainer.classList.remove("hidden");
   renderQuestion();
 }
+
 function renderQuestion() {
   if (currentQuestionIndex >= totalQuestions) { showResults(); return; }
   const q = questions[currentQuestionIndex];
@@ -402,9 +417,11 @@ function renderQuestion() {
   backBtn.style.visibility = currentQuestionIndex ? "visible" : "hidden";
   updateProgressBar();
 }
+
 function updateProgressBar() {
   progressBar.style.width = ((currentQuestionIndex+1)/totalQuestions)*100 + "%";
 }
+
 function nextQuestion(val=null) {
   if (val) {
     const id = questions[currentQuestionIndex].id;
@@ -413,6 +430,7 @@ function nextQuestion(val=null) {
   currentQuestionIndex++;
   currentQuestionIndex < totalQuestions ? renderQuestion() : showResults();
 }
+
 function previousQuestion() {
   if (currentQuestionIndex) { currentQuestionIndex--; renderQuestion(); }
 }
@@ -481,22 +499,22 @@ function displayRecommendedAmutas(arr) {
     const ratioStr = a.ratio.toFixed(1);
     const gid = "gallery-"+a.amKey;
     const card = document.createElement("div");
-    card.className = "bg-blue-50 rounded-lg p-4 border border-blue-200";
+    card.className = "bg-blue-50 dark:bg-blue-900 rounded-lg p-4 border border-blue-200 dark:border-blue-700";
     card.innerHTML = `
       <div class="flex items-start gap-4">
         <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-700 flex items-center justify-center text-white text-2xl">
           <i class="fas ${a.icon}"></i>
         </div>
         <div class="flex-1 space-y-2">
-          <h4 class="font-bold text-lg text-blue-800">${a.name}</h4>
-          <span class="inline-block text-xs font-bold px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+          <h4 class="font-bold text-lg text-blue-800 dark:text-blue-200">${a.name}</h4>
+          <span class="inline-block text-xs font-bold px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-700 dark:text-blue-200">
             ${ratioStr}% התאמה
           </span>
-          <p class="text-sm text-gray-800 leading-relaxed">
+          <p class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">
             ${(() => {
               const firstSentence = AMUTA_DATA[a.amKey].description.split(".")[0] + ".";
               const rest = AMUTA_DATA[a.amKey].description.replace(firstSentence, "").trim();
-              return `<span class="font-semibold text-blue-900">${firstSentence}</span> ${rest}`;
+              return `<span class="font-semibold text-blue-900 dark:text-blue-300">${firstSentence}</span> ${rest}`;
             })()}
           </p>
           <button class="bg-blue-700 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-semibold"
@@ -512,6 +530,7 @@ function displayRecommendedAmutas(arr) {
     AMUTA_DATA[a.amKey].images.forEach(u=>galDiv.appendChild(createMediaElement(u)));
   });
 }
+
 window.toggleAmutaGallery = id => document.getElementById(id)?.classList.toggle("hidden");
 
 /* ========================================
