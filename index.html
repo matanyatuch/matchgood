@@ -97,20 +97,6 @@
     <button id="skipBtn" class="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg transition-colors flex items-center">דלג <i class="fas fa-forward mr-2"></i></button>
   </div>
 </div>
-  <!-- Question -->
-  <div id="question-card" class="text-center mb-6">
-    <h2 id="question-text" class="font-semibold mb-6 text-xl"></h2>
-    <div class="flex flex-col gap-4">
-      <button class="answer-btn border-4 border-green-500 rounded-xl bg-white text-green-700 font-semibold h-14 hover:bg-green-50 flex items-center justify-center gap-2" data-value="yes">
-        <i class="fas fa-check-circle text-xl"></i> כן
-      </button>
-      <button class="answer-btn border-4 border-yellow-500 rounded-xl bg-white text-yellow-700 font-semibold h-14 hover:bg-yellow-50 flex items-center justify-center gap-2" data-value="maybe">
-        <i class="fas fa-question-circle text-xl"></i> בערך
-      </button>
-      <button class="answer-btn border-4 border-red-500 rounded-xl bg-white text-red-700 font-semibold h-14 hover:bg-red-50 flex items-center justify-center gap-2" data-value="no">
-        <i class="fas fa-times-circle text-xl"></i> לא
-      </button>
-    </div>
   </div>
   <!-- Nav -->
   <div class="flex justify-between">
@@ -123,38 +109,23 @@
   </div>
 </div>
 
-<!-- ====== Results ====== -->
-<div id="results-container" class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-6 border-4 border-blue-700 hidden">
+<div id="results-container" class="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 border-4 border-blue-700 dark:border-blue-400 hidden">
   <div class="text-center mb-6">
-    <i class="fas fa-chart-pie text-blue-600 text-5xl mb-4"></i>
-    <h2 class="text-2xl font-bold text-blue-800 mb-2">תוצאות השאלון שלך</h2>
-    <p class="text-gray-600">לפניך פילוח ההתאמה שלך לסוגי ההתנדבויות השונות</p>
+    <i class="fas fa-chart-pie text-blue-600 dark:text-blue-400 text-5xl mb-4"></i>
+    <h2 class="text-2xl font-bold text-blue-800 dark:text-blue-200 mb-2">תוצאות השאלון שלך</h2>
+    <p class="text-gray-600 dark:text-gray-300">לפניך פילוח ההתאמה שלך לסוגי ההתנדבויות השונות</p>
   </div>
-
   <!-- Pie -->
   <div class="mb-8">
-    <h3 class="text-lg font-semibold mb-4 text-center">
-      <i class="fas fa-chart-pie mr-2"></i> התפלגות ההתאמה
-    </h3>
-    <div class="flex items-center justify-center mx-auto w-[300px] h-[300px] chart-container">
-      <canvas id="pieChart"></canvas>
-    </div>
+    <h3 class="text-lg font-semibold mb-4 text-center text-blue-800 dark:text-blue-200"><i class="fas fa-chart-pie mr-2"></i> התפלגות ההתאמה</h3>
+    <div class="flex items-center justify-center mx-auto w-[300px] h-[300px] chart-container"><canvas id="pieChart"></canvas></div>
   </div>
-
-  <div class="text-center mt-4 text-lg text-blue-800 font-semibold mb-4">
-    איזה בן אדם מדהים את/ה! זה המקומות שיכולים להתאים לך:
-  </div>
-
+  <div class="text-center mt-4 text-lg font-semibold text-blue-800 dark:text-blue-200 mb-4">איזה בן אדם מדהים את/ה! זה המקומות שיכולים להתאים לך:</div>
   <div id="recommended-amutas" class="space-y-4 mb-4"></div>
-
   <!-- כפתור הצגת כל העמותות -->
-  <div class="text-center mt-2">
-    <button id="showAllBtn"
-            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg transition-colors text-base font-semibold">
-      לכל המקומות באתר
-    </button>
-  </div>
-
+  <div class="text-center mt-2"><button id="showAllBtn" class="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-lg transition-colors text-base font-semibold">לכל המקומות באתר</button></div>
+  <div class="text-center mt-4"><button id="whatsappBtn" class="bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-500 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold inline-flex items-center gap-2"><i class="fab fa-whatsapp text-xl"></i> אני רוצה עוד פרטים!</button></div>
+  <div class="text-center mt-4"><button id="readMoreBtn" class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-400 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold">מידע נוסף</button></div>
   <div class="text-center mt-4">
     <button id="whatsappBtn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition-colors text-base font-semibold inline-flex items-center gap-2">
       <i class="fab fa-whatsapp text-xl"></i> אני רוצה עוד פרטים!
