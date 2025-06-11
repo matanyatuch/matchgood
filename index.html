@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" class="dark">
 <head>
   <meta charset="UTF-8" />
   <title>שאלון להתאמת התנדבות</title>
 
-  <!-- מניעת זום כפול / pinch -->
-  <meta name="viewport"
-        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <!-- מניעת זוום כפול / pinch -->
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
   <!-- TailwindCSS -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
@@ -22,10 +21,8 @@
     body {
       margin: 0; padding: 0;
       font-family: 'Assistant', sans-serif;
-      background-color: #F5F7FA; color: #0C1A42;
     }
     @media (prefers-color-scheme: dark) {
-      body { background-color: #1E1E1E; color: #E8E8E8; }
       .bg-white { background-color: #2A2A2A !important; }
       .border-blue-700 { border-color: #4F82FF !important; }
       .bg-blue-50 { background-color: #1A365D !important; color: #E2E8F0 !important; }
@@ -42,6 +39,9 @@
     .amuta-gallery img,
     .amuta-gallery video,
     .amuta-gallery iframe { max-width: 100%; border-radius: .5rem; margin-bottom: .5rem; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-4 md:p-6 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-[Assistant]">
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6">
