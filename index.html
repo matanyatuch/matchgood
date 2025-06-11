@@ -20,27 +20,25 @@
     html { direction: rtl; scroll-behavior: smooth; touch-action: manipulation; }
     body { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background-color:#F5F7FA; color:#0C1A42; }
 
-    /* מצב כהה – ניגודיות מובטחת */
-/* מצב כהה – תיקוני קונטרסט לכפתורים וטקסטים אפורים */
+  /* מצב כהה – תיקוני קונטרסט */
 @media (prefers-color-scheme: dark) {
   body { background-color:#1E1E1E; color:#E8E8E8; }
 
-  /* רקעים אפורים שמגיעים מטיילווינד */
+  /* רקעים אפורים של Tailwind */
   .bg-gray-50,
-  .bg-gray-100 { background-color:#2D3748 !important; }   /* #2D3748 = gray-700 */
-  .bg-gray-200 { background-color:#4A5568 !important; }   /* gray-600 */
-  .hover\\:bg-gray-200:hover { background-color:#4A5568 !important; }
-  .hover\\:bg-gray-300:hover { background-color:#4A5568 !important; }
+  .bg-gray-100 { background-color:#2D3748 !important; }  /* gray-700 */
+  .bg-gray-200 { background-color:#4A5568 !important; }  /* gray-600 */
+  .hover\:bg-gray-200:hover { background-color:#4A5568 !important; }
+  .hover\:bg-gray-300:hover { background-color:#4A5568 !important; }
 
-  /* טקסטים שהיו כהים מדי */
+  /* טקסטים כהים מדי */
   .text-gray-600,
-  .text-gray-800 { color:#D1D5DB !important; }            /* gray-300 */
+  .text-gray-800 { color:#D1D5DB !important; }           /* gray-300 */
   .visitor-counter { color:#E8E8E8 !important; }
 
-  /* כפתור “לכל המקומות באתר” + כפתורי דלג/חזור */
-  .text-gray-200 { color:#F7FAFC !important; }            /* gray-50 */
-}
-
+  /* כפתור “לכל המקומות באתר” + דלג/חזור */
+  .text-gray-200 { color:#F7FAFC !important; }           /* gray-50 */
+}  /* ← שים לב לסוגר הזה */
 
     h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
     h2 { font-size: clamp(1.2rem, 4vw, 1.5rem); }
