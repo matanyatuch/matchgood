@@ -7,7 +7,7 @@
   <!-- מניעת זום כפול / pinch -->
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <!-- TailwindCSS CDN (כולל dark mode ב‑media כברירת מחדל) -->
+  <!-- TailwindCSS CDN (כולל dark mode ב-media כברירת מחדל) -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <!-- Google Font: Assistant -->
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -20,7 +20,7 @@
     html { direction: rtl; scroll-behavior: smooth; touch-action: manipulation; }
     body { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background-color:#F5F7FA; color:#0C1A42; }
 
-    /* מצב כהה – media query (Tailwind כבר מייצר מחלקות dark:, אבל כאן אנו תופסים גם אלמנטים קיימים) */
+    /* מצב כהה – מוודא ניגודיות טובה */
     @media (prefers-color-scheme: dark) {
       body { background-color:#1E1E1E; color:#E8E8E8; }
       .bg-white        { background-color:#2A2A2A !important; }
@@ -28,7 +28,7 @@
       .border-blue-700 { border-color:#4F82FF !important; }
       .bg-blue-50      { background-color:#1A365D !important; color:#E2E8F0 !important; }
       .text-blue-800   { color:#93C5FD !important; }
-      .text-gray-800   { color:#E5E7EB !important; }
+      .text-gray-800   { color:#D1D5DB !important; }
       .text-green-700  { color:#6EE7B7 !important; }
       .text-yellow-700 { color:#FDE68A !important; }
       .text-red-700    { color:#FCA5A5 !important; }
