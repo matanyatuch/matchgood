@@ -12,88 +12,54 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
-html { direction: rtl; scroll-behavior: smooth; touch-action: manipulation; }
-body { margin:0;padding:0;font-family:'Assistant',sans-serif;background-color:#F7F9FB;color:#0C1A42; }
+html{direction:rtl;scroll-behavior:smooth;touch-action:manipulation}
+body{margin:0;padding:0;font-family:'Assistant',sans-serif;background-color:#F7F9FB;color:#0C1A42}
 
-/* מצב כהה – קונטרסט גבוה */
-@media (prefers-color-scheme: dark) {
-  body { background-color:#1B1C1E; color:#F1F2F4; }
+/* ——— Dark Mode (high‑contrast) ——— */
+@media (prefers-color-scheme: dark){
+  body{background:#1B1C1E;color:#F1F2F4}
 
-  /* רקעים אפורים של Tailwind */
-  .bg-gray-50,.bg-gray-100 { background-color:#2D3748 !important; }
-  .bg-gray-200 { background-color:#4A5568 !important; }
-  .hover\:bg-gray-200:hover,.hover\:bg-gray-300:hover { background-color:#3B3C40 !important; }
+  /* רקעים אפורים */
+  .bg-gray-50,.bg-gray-100{background:#2D3748!important}
+  .bg-gray-200{background:#4A5568!important}
+  .hover\:bg-gray-200:hover,.hover\:bg-gray-300:hover{background:#3B3C40!important}
 
   /* כרטיסים לבנים */
-  .bg-white { background-color:#222427 !important; }
-
-  /* גבולות וכפתורים כחולים */
-  .border-blue-700 { border-color:#4F8CFF !important; }
-  .bg-blue-700 { background-color:#2563EB !important; }
-  .hover\:bg-blue-600:hover { background-color:#1E52C7 !important; }
+  .bg-white{background:#222427!important}
 
   /* טקסטים */
-  .text-gray-600,.text-gray-800 { color:#CDD0D4 !important; }
-  .text-gray-200 { color:#F7FAFC !important; }
-  .text-blue-800,.text-blue-700 { color:#4F8CFF !important; }
-  .visitor-counter { color:#F7FAFC !important; font-weight:700; }
+  .text-gray-600,.text-gray-800{color:#CDD0D4!important}
+  .text-gray-200{color:#F7FAFC!important}
+  .text-blue-800,.text-blue-700,.text-blue-900{color:#4F8CFF!important}
+  .visitor-counter{color:#F7FAFC!important;font-weight:700}
+  .dark strong{color:#F1F2F4!important}
 
-  /* headline מעל כרטיסי תוצאות */
-  #results-container h2 { color:#4F8CFF !important; }
+  /* כפתורים וכחולים */
+  .border-blue-700{border-color:#4F8CFF!important}
+  .bg-blue-700{background:#2563EB!important}
+  .hover\:bg-blue-600:hover{background:#1E52C7!important}
 
-  /* כרטיסי תוצאות רקע כחול כהה */
-  .bg-blue-50 { background-color:#0D3B66 !important; color:#E6F0FF !important; }
-
-  /* תגי אחוז ההתאמה */
-  .bg-blue-100 { background-color:#144e8a !important; color:#E6F0FF !important; }
+  /* כרטיסי תוצאות */
+  .bg-blue-50{background:#0D3B66!important;color:#E6F0FF!important}
+  .bg-blue-100{background:#144E8A!important;color:#E6F0FF!important}
+  #results-container h2{color:#4F8CFF!important}
 
   /* גלריה */
-  .amuta-gallery img,.amuta-gallery video { background-color:#2A2B2F;border:1px solid #3B3C40; }
+  .amuta-gallery img,.amuta-gallery video{background:#2A2B2F;border:1px solid #3B3C40}
 }
 
-  /* רקעים אפורים של Tailwind */
-  .bg-gray-50,
-  .bg-gray-100 { background-color:#2D3748 !important; }
-  .bg-gray-200 { background-color:#4A5568 !important; }
-  .hover\:bg-gray-200:hover,
-  .hover\:bg-gray-300:hover { background-color:#3B3C40 !important; }
-
-  /* כרטיסים לבנים */
-  .bg-white { background-color:#222427 !important; }
-
-  /* גבולות וכפתורים כחולים */
-  .border-blue-700 { border-color:#4F8CFF !important; }
-  .bg-blue-700 { background-color:#2563EB !important; }
-  .hover\:bg-blue-600:hover { background-color:#1E52C7 !important; }
-
-  /* טקסטים */
-  .text-gray-600,
-  .text-gray-800 { color:#CDD0D4 !important; }
-  .text-gray-200 { color:#F7FAFC !important; }
-  .text-blue-800,
-  .text-blue-700 { color:#4F8CFF !important; }
-  .visitor-counter { color:#E8E8E8 !important; }
-
-  /* כרטיסי תוצאות רקע כחול כהה */
-  .bg-blue-50 { background-color:#0D3B66 !important; color:#E6F0FF !important; }
-
-  /* גלריה */
-  .amuta-gallery img,
-  .amuta-gallery video { background-color:#2A2B2F;border:1px solid #3B3C40; }
-
-  
-h1{font-size:clamp(1.5rem,5vw,2rem);}  
-h2{font-size:clamp(1.2rem,4vw,1.5rem);}  
-.chart-container{width:300px;height:300px;display:flex;align-items:center;justify-content:center;position:relative;}  
-.answer-btn{transition:all .2s ease;}  
-.answer-btn:hover{transform:translateY(-2px);box-shadow:0 4px 6px rgba(0,0,0,.15);}  
-.hidden{display:none!important;}  
-.visitor-counter{font-size:1rem;font-weight:600;margin-bottom:1rem;text-align:center;}  
-.amuta-gallery{margin-top:.5rem;}  
-.amuta-gallery.hidden{display:none;}  
-.amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe{max-width:100%;border-radius:.5rem;margin-bottom:.5rem;background:#FFF;}  
-.dark .amuta-gallery img,.dark .amuta-gallery video{background:#2D3748;}
-</style>
+h1{font-size:clamp(1.5rem,5vw,2rem)}
+h2{font-size:clamp(1.2rem,4vw,1.5rem)}
+.chart-container{width:300px;height:300px;display:flex;align-items:center;justify-content:center;position:relative}
+.answer-btn{transition:all .2s ease}
+.answer-btn:hover{transform:translateY(-2px);box-shadow:0 4px 6px rgba(0,0,0,.15)}
+.hidden{display:none!important}
+.visitor-counter{font-size:1rem;font-weight:600;margin-bottom:1rem;text-align:center}
+.amuta-gallery{margin-top:.5rem}
+.amuta-gallery.hidden{display:none}
+.amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe{max-width:100%;border-radius:.5rem;margin-bottom:.5rem;background:#FFF}
+.dark .amuta-gallery img,.dark .amuta-gallery video{background:#2D3748}
+  </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-[Assistant]">
 
