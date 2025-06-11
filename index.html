@@ -7,7 +7,7 @@
   <!-- מניעת זום כפול / pinch -->
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 
-  <!-- TailwindCSS CDN (כולל dark mode ב-media כברירת מחדל) -->
+  <!-- TailwindCSS CDN (darkMode=media) -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <!-- Google Font: Assistant -->
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -20,7 +20,7 @@
     html { direction: rtl; scroll-behavior: smooth; touch-action: manipulation; }
     body { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background-color:#F5F7FA; color:#0C1A42; }
 
-    /* מצב כהה – מוודא ניגודיות טובה */
+    /* מצב כהה – ניגודיות מובטחת */
     @media (prefers-color-scheme: dark) {
       body { background-color:#1E1E1E; color:#E8E8E8; }
       .bg-white        { background-color:#2A2A2A !important; }
@@ -33,51 +33,44 @@
       .text-yellow-700 { color:#FDE68A !important; }
       .text-red-700    { color:#FCA5A5 !important; }
     }
-
     h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
     h2 { font-size: clamp(1.2rem, 4vw, 1.5rem); }
-    .chart-container { position: relative; width: 300px; height: 300px; display: flex; align-items: center; justify-content: center; }
-    .answer-btn { transition: all .2s ease; }
-    .answer-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,.1); }
-    .hidden { display: none !important; }
-    .visitor-counter { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; text-align: center; }
-    .amuta-gallery { margin-top: .5rem; }
-    .amuta-gallery.hidden { display: none; }
-    .amuta-gallery img,
-    .amuta-gallery video,
-    .amuta-gallery iframe { max-width: 100%; border-radius: .5rem; margin-bottom: .5rem; }
+    .chart-container { width:300px;height:300px;display:flex;align-items:center;justify-content:center;position:relative; }
+    .answer-btn { transition:all .2s ease; }
+    .answer-btn:hover { transform:translateY(-2px);box-shadow:0 4px 6px rgba(0,0,0,.1); }
+    .hidden { display:none!important; }
+    .visitor-counter { font-size:1rem;font-weight:600;margin-bottom:1rem;text-align:center; }
+    .amuta-gallery { margin-top:.5rem; }
+    .amuta-gallery.hidden { display:none; }
+    .amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe { max-width:100%;border-radius:.5rem;margin-bottom:.5rem; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-[Assistant]">
-  </style>
-</head>
-<body class="min-h-screen flex flex-col items-center p-4 md:p-6">
+  <!-- 🟢 אין תגיות <body> כפולות מכאן והלאה -->
 
   <!-- קאונטר מבקרים -->
   <div class="visitor-counter">
-   מספר המבקרים באתר עד כה: <span id="counter-value">670</span>
+    מספר המבקרים באתר עד כה: <span id="counter-value">670</span>
   </div>
 
-<!-- ====== Intro ====== -->
-<div id="intro-container" class="w-full max-w-2xl bg-white shadow-lg rounded-xl p-8 mb-6 border-4 border-blue-700">
-  <div class="text-center mb-6">
-    <i class="fas fa-hands-helping text-blue-600 text-5xl mb-4"></i>
-    <h1 class="text-3xl text-blue-800 font-bold mb-4">שאלון התאמה להתנדבות</h1>
-    <p class="mb-6 leading-relaxed text-lg">
-      לכל אדם יש משהו טוב לתת לעולם – <strong>כל אחד בדרך שלו.</strong><br />
-      יש מי שמתחבר למוזיקה ומנגן כדי לשמח חולים,<br />
-      ויש מי שאוהב אקשן ומתנדב בגופי החירום השונים.<br /><br />
-      <strong>השאלון שלפניך</strong> נועד לעזור לך לגלות איפה בדיוק נמצא המקום<br />
-      שבו תרגיש הכי משמעותי והכי מועיל.<br /><br />
-      השאלון מעט ארוך, אך <strong>התוצאה בהחלט שווה את זה.</strong><br /><br />
-      הערה: השאלון לא מחייב אותך להתנדב בשום מקום, אלא רק נותן לך כיוון.<br />
-      הערה נוספת: השאלון נכתב מטעמי נוחות בלבד בלשון זכר אך פונה לשני המינים.
-    </p>
-    <button id="startQuizBtn" class="bg-blue-700 hover:bg-blue-600 text-white px-8 py-3 rounded-lg transition-colors text-lg font-semibold">
-      <i class="fas fa-play mr-2"></i> התחל שאלון
-    </button>
+  <!-- ====== Intro ====== -->
+  <div id="intro-container" class="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 mb-6 border-4 border-blue-700 dark:border-blue-400">
+    <div class="text-center mb-6">
+      <i class="fas fa-hands-helping text-blue-600 dark:text-blue-400 text-5xl mb-4"></i>
+      <h1 class="text-3xl font-bold text-blue-800 dark:text-blue-200 mb-4">שאלון התאמה להתנדבות</h1>
+      <p class="mb-6 leading-relaxed text-lg text-gray-800 dark:text-gray-200">
+        לכל אדם יש משהו טוב לתת לעולם – <strong>כל אחד בדרך שלו.</strong><br />
+        יש מי שמתחבר למוזיקה ומנגן כדי לשמח חולים,<br />
+        ויש מי שאוהב אקשן ומתנדב בגופי החירום השונים.<br /><br />
+        <strong>השאלון שלפניך</strong> נועד לעזור לך לגלות איפה בדיוק נמצא המקום<br />
+        שבו תרגיש הכי משמעותי והכי מועיל.<br /><br />
+        השאלון מעט ארוך, אך <strong>התוצאה בהחלט שווה את זה.</strong><br /><br />
+        <em>הערה: השאלון לא מחייב אותך להתנדב בשום מקום, אלא רק נותן לך כיוון.</em><br />
+        <em>1הערה נוספת: השאלון נכתב מטעמי נוחות בלבד בלשון זכר אך פונה לשני המינים.</em>
+      </p>
+      <button id="startQuizBtn" class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-400 text-white px-8 py-3 rounded-lg transition-colors text-lg font-semibold"><i class="fas fa-play mr-2"></i> התחל שאלון</button>
+    </div>
   </div>
-</div>
 
 <!-- ====== Quiz Card ====== -->
 <div id="question-container" class="w-full max-w-md bg-white shadow-lg rounded-xl p-6 mb-6 border-4 border-blue-700 hidden">
