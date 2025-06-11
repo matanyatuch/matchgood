@@ -21,18 +21,27 @@
     body { margin: 0; padding: 0; font-family: 'Assistant', sans-serif; background-color:#F5F7FA; color:#0C1A42; }
 
     /* מצב כהה – ניגודיות מובטחת */
-    @media (prefers-color-scheme: dark) {
-      body { background-color:#1E1E1E; color:#E8E8E8; }
-      .bg-white        { background-color:#2A2A2A !important; }
-      .bg-gray-50      { background-color:#1E1E1E !important; }
-      .border-blue-700 { border-color:#4F82FF !important; }
-      .bg-blue-50      { background-color:#1A365D !important; color:#E2E8F0 !important; }
-      .text-blue-800   { color:#93C5FD !important; }
-      .text-gray-800   { color:#D1D5DB !important; }
-      .text-green-700  { color:#6EE7B7 !important; }
-      .text-yellow-700 { color:#FDE68A !important; }
-      .text-red-700    { color:#FCA5A5 !important; }
-    }
+/* מצב כהה – תיקוני קונטרסט לכפתורים וטקסטים אפורים */
+@media (prefers-color-scheme: dark) {
+  body { background-color:#1E1E1E; color:#E8E8E8; }
+
+  /* רקעים אפורים שמגיעים מטיילווינד */
+  .bg-gray-50,
+  .bg-gray-100 { background-color:#2D3748 !important; }   /* #2D3748 = gray-700 */
+  .bg-gray-200 { background-color:#4A5568 !important; }   /* gray-600 */
+  .hover\\:bg-gray-200:hover { background-color:#4A5568 !important; }
+  .hover\\:bg-gray-300:hover { background-color:#4A5568 !important; }
+
+  /* טקסטים שהיו כהים מדי */
+  .text-gray-600,
+  .text-gray-800 { color:#D1D5DB !important; }            /* gray-300 */
+  .visitor-counter { color:#E8E8E8 !important; }
+
+  /* כפתור “לכל המקומות באתר” + כפתורי דלג/חזור */
+  .text-gray-200 { color:#F7FAFC !important; }            /* gray-50 */
+}
+
+
     h1 { font-size: clamp(1.5rem, 5vw, 2rem); }
     h2 { font-size: clamp(1.2rem, 4vw, 1.5rem); }
     .chart-container { width:300px;height:300px;display:flex;align-items:center;justify-content:center;position:relative; }
