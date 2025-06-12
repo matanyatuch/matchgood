@@ -566,12 +566,29 @@ window.toggleAmutaGallery = id => document.getElementById(id)?.classList.toggle(
 });
 
 
+
 /* ========================================
-   10) כפתור “לכל המקומות באתר”
+   כפתור Show / Hide All
    ======================================== */
+   let showingAll = false;   // מצב נוכחי
+
 showAllBtn.addEventListener("click", () => {
-  displayRecommendedAmutas(allAmutaResults);
-  showAllBtn.classList.add("hidden");            // מסתיר את הכפתור לאחר הלחיצה
+  if (!showingAll) {                   // ➊ *הצג הכול*
+    displayRecommendedAmutas(allAmutaResults);      // כל הרשימה
+    showAllBtn.textContent = "סגור רשימה";
+    showAllBtn.classList
+      .remove("bg-gradient-to-r","from-blue-600","to-purple-600","hover:from-blue-700","hover:to-purple-700")
+      .add("bg-red-600","hover:bg-red-700");        // צובע לאדום
+    showingAll = true;
+  } else {                           // ➋ *סגור* – חזרה לשלישייה
+    recommendedAmutasDiv.innerHTML = "";
+    displayRecommendedAmutas(allAmutaResults.slice(0,3));
+    showAllBtn.textContent = "הצג את כל העמותות";
+    showAllBtn.classList
+      .add("bg-gradient-to-r","from-blue-600","to-purple-600","hover:from-blue-700","hover:to-purple-700")
+      .remove("bg-red-600","hover:bg-red-700");
+    showingAll = false;
+  }
 });
 
 /* ========================================
