@@ -305,7 +305,8 @@ const AMUTA_DATA = {
     images: [
       "https://www.masaisrael.org/wp-content/uploads/2024/07/WhatsApp-Image-2024-07-10-at-12.07.55-PM-1-843x1024.jpeg",
       "https://afmda.org/wp-content/uploads/2022/12/Noiman-family.jpg",
-      "https://www.jems.com/wp-content/uploads/2022/02/MDA-volunteers.jpg"
+      "https://www.jems.com/wp-content/uploads/2022/02/MDA-volunteers.jpg",
+      "https://www.magendavidadom.org.au/wp-content/uploads/2022/11/WhatsApp-Image-2022-11-15-at-19.37.32-1280x960.jpeg"
     ]
   },
   fire: {
@@ -316,8 +317,8 @@ const AMUTA_DATA = {
       "https://www.gov.il/BlobFolder/guide/induction_process/he/FIRE220112KR850_1655.jpg",
       "https://www.gov.il/BlobFolder/news/recruitment_of_fire_fighters_2024/he/FIRE230115KR850_8859.jpg",
       "https://www.gov.il/BlobFolder/news/recruitment_of_fire_fighters_2024/he/FIRE230421KR850_1453.jpg",
-      "https://youtu.be/uBbq91mKqUg",
-      "https://www.magendavidadom.org.au/wp-content/uploads/2022/11/WhatsApp-Image-2022-11-15-at-19.37.32-1280x960.jpeg"
+      "https://youtu.be/uBbq91mKqUg"
+    
     ]
   },
   yedidim: {
@@ -364,6 +365,7 @@ const AMUTA_DATA = {
       "https://drive.google.com/file/d/1rW6dTCSv8KIDqqpr9uE1DQQpI7YRSF8L/view?usp=sharing"
     ]
   }
+ 
 };
 
 /* ========================================
@@ -533,14 +535,36 @@ function displayRecommendedAmutas(arr) {
 
 window.toggleAmutaGallery = id => document.getElementById(id)?.classList.toggle("hidden");
 
+
 /* ========================================
-   9) כפתור WhatsApp
+   9) כפתור WhatsApp
    ======================================== */
-whatsappBtn.addEventListener("click", () => {
-  const phone   = "972508787826";
-  const message = "היי, מילאתי את השאלון שלך ואשמח לשמוע עוד פרטים לגבי ההתנדבות";
-  window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`, "_blank");
+   whatsappBtn.addEventListener("click", () => {
+  const phone = "972508787826";      // מספר הוואטסאפ שלך (ללא +)
+
+  // ודא שהתוצאות כבר חושבו
+  if (!allAmutaResults.length) {
+    alert("יש להשלים את השאלון לפני שליחת הודעה 😊");
+    return;
+  }
+
+  // שלושת ההתאמות הגבוהות ביותר
+  const topThree = allAmutaResults.slice(0, 3);
+
+  // בניית ההודעה – RTL נעול עם \u202B
+  const RLE = "\u202B";
+  const lines = [
+    `${RLE}היי, מילאתי את השאלון באתר שלך`,
+    "וקיבלתי",
+    ...topThree.map(a => `${a.ratio.toFixed(0)}% התאמה ל${a.name}`),
+    "",
+    "אשמח לשמוע עוד פרטים"
+  ];
+
+  const msg = encodeURIComponent(lines.join("\n"));
+  window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
 });
+
 
 /* ========================================
    10) כפתור “לכל המקומות באתר”
