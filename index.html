@@ -696,30 +696,24 @@ backBtn.addEventListener("click", previousQuestion);
   
   let i = 0;
   
-  /* —— 1. track = 100 % × N —— */
+  /* track = 100% × N */
   track.style.width = `${slides.length * 100}%`;
   
-  /* —— 2. slide = 100 / N —— */
-  slides.forEach(s => s.style.width = `${100 / slides.length}%`);
-  
-  /* —— 3. בונים נקודות —— */
-  slides.forEach((_, idx)=>{
-    const d=document.createElement("div");
-    d.className="carousel-dot"+(idx? "":" active");
-    d.onclick = ()=>{ i=idx; update(); };
+  /* נקודות */
+  slides.forEach((_, idx) => {
+    const d = document.createElement("div");
+    d.className = "carousel-dot" + (idx ? "" : " active");
+    d.onclick   = () => { i = idx; update(); };
     dots.appendChild(d);
   });
   
-  /* —— 4. פונקציית עדכון —— */
   function update(){
-    const shift = i * (100 / slides.length);          // ← אחוז יחסי
-    track.style.transform = `translateX(-${shift}%)`;
-  
+    track.style.transform = `translateX(-${i*100}%)`;
     dots.querySelectorAll(".carousel-dot")
         .forEach((d,k)=>d.classList.toggle("active",k===i));
   }
+  update();                                 /* ← קריאה ראשונה */
   
-  /* —— 5. החלקה אוטומטית —— */
   setInterval(()=>{ i=(i+1)%slides.length; update(); }, 10000);
   </script>
   
