@@ -59,29 +59,71 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 .amuta-gallery.hidden{display:none}
 .amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe{max-width:100%;border-radius:.5rem;margin-bottom:.5rem;background:#FFF}
 .dark .amuta-gallery img,.dark .amuta-gallery video{background:#2D3748}
-/* TRACK */
+/* ──────────────────────────────
+   ❶  מעטפת הקרוסלה
+   ────────────────────────────── */
+   #amuta-carousel{
+  max-width: 32rem;                 /* Tailwind: max-w-2xl */
+  margin-top: 1.5rem;               /* mt-6 */
+  padding: 1rem;                    /* p-4 */
+  border: 4px solid #2563eb;        /* כחול – מתאים למסגרת השאלון */
+  border-radius: 0.75rem;           /* rounded-xl */
+  background: #fff;                 /* אור */
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgb(0 0 0 / .15);
+}
+@media (prefers-color-scheme: dark){
+  #amuta-carousel{
+    background:#1f2937;             /* dark:bg-gray-800 */
+    border-color:#60a5fa;           /* כחול בהיר ל-Dark */
+  }
+}
+
+/* ──────────────────────────────
+   ❷  פס השקופיות (Track)
+   ────────────────────────────── */
 #carousel-track{
   display:flex;
-  direction:ltr;                 /* מכריח החלקה שמאלה בממשק RTL */
+  direction:ltr;                    /* שומר החלקה שמאלה גם באתר RTL */
   transition:transform .6s ease-in-out;
 }
 
-/* SLIDE */
+/* ──────────────────────────────
+   ❸  שקופית אחת
+   ────────────────────────────── */
 .carousel-slide{
-  flex:0 0 100%;    /* ⬅ 100% רוחב, לא 14% */
-  height:16rem;     /* h-64 */
-  object-fit:contain;
-  border-radius:.75rem;
+  flex:0 0 100%;                    /* כל שקופית = 100% רוחב המעטפת */
+  height:16rem;                     /* Tailwind: h-64 (≈256px) */
+  object-fit:contain;               /* לוגו לא נחתך */
+  border-radius:0.75rem;
   display:block;
 }
 
-
-/* DOTS */
+/* ──────────────────────────────
+   ❹  נקודות ניווט
+   ────────────────────────────── */
+#carousel-dots{
+  display:flex;
+  justify-content:center;
+  gap:0.5rem;
+  margin-top:1rem;
+}
 .carousel-dot{
   width:10px;height:10px;border-radius:9999px;
-  background:#bbb;opacity:.6;transition:.3s;
+  background:#a1a1aa;              /* אפור ביניים */
+  opacity:.6;
+  transition:.3s;
+  cursor:pointer;
 }
-.carousel-dot.active{background:#2563eb;opacity:1;}
+.carousel-dot.active{
+  background:#2563eb;              /* כחול תואם */
+  opacity:1;
+}
+@media (prefers-color-scheme: dark){
+  .carousel-dot{background:#6b7280;}
+  .carousel-dot.active{background:#3b82f6;}
+}
+
 
   </style>
 </head>
@@ -450,11 +492,14 @@ readMoreBtn.addEventListener("click", () => {
 /* ========================================
    7) זרימת שאלון
    ======================================== */
-function showQuiz() {
+
+function showQuiz(){
   introContainer.classList.add("hidden");
+  document.getElementById("amuta-carousel").classList.add("hidden"); // NEW
   questionContainer.classList.remove("hidden");
   renderQuestion();
 }
+
 
 function renderQuestion() {
   if (currentQuestionIndex >= totalQuestions) { showResults(); return; }
@@ -651,27 +696,32 @@ backBtn.addEventListener("click", previousQuestion);
   
   let i = 0;
   
-  /* track = 100% × #slides */
+  /* —— 1. track = 100 % × N —— */
   track.style.width = `${slides.length * 100}%`;
   
-  /* בונים נקודות - ללא שינוי */
-  slides.forEach((_, idx) => {
-    const dot = document.createElement("div");
-    dot.className = "carousel-dot" + (idx===0?" active":"");
-    dot.onclick   = ()=>{ i=idx; update(); };
-    dots.appendChild(dot);
+  /* —— 2. slide = 100 / N —— */
+  slides.forEach(s => s.style.width = `${100 / slides.length}%`);
+  
+  /* —— 3. בונים נקודות —— */
+  slides.forEach((_, idx)=>{
+    const d=document.createElement("div");
+    d.className="carousel-dot"+(idx? "":" active");
+    d.onclick = ()=>{ i=idx; update(); };
+    dots.appendChild(d);
   });
   
+  /* —— 4. פונקציית עדכון —— */
   function update(){
-    track.style.transform = `translateX(-${i*100}%)`;   // ⬅ index*100%
-    dots.querySelectorAll(".carousel-dot").forEach((d,k)=>
-        d.classList.toggle("active",k===i));
+    const shift = i * (100 / slides.length);          // ← אחוז יחסי
+    track.style.transform = `translateX(-${shift}%)`;
+  
+    dots.querySelectorAll(".carousel-dot")
+        .forEach((d,k)=>d.classList.toggle("active",k===i));
   }
   
-  setInterval(()=>{ i=(i+1)%slides.length; update(); },10000);
+  /* —— 5. החלקה אוטומטית —— */
+  setInterval(()=>{ i=(i+1)%slides.length; update(); }, 10000);
   </script>
-  
-  
   
 </body>
 </html>
