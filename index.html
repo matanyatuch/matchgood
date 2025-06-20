@@ -93,13 +93,14 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 
 /* שקופית (ה-img עצמה) */
 .carousel-slide{
-  flex-shrink:0;
+  flex-shrink:0;             /* שומר על גודל קבוע */
   height:16rem;
   object-fit:contain;
   object-position:center;
   border-radius:.75rem;
   display:block;
 }
+
 
 /* נקודות */
 #carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
@@ -686,7 +687,7 @@ backBtn.addEventListener("click", previousQuestion);
     /* 1) Track = 100% × N  |  Slide = 100/N % */
     track.style.width = `${N * 100}%`;
     const slidePercent = 100 / N;                 // ≈ 14.285….
-    slides.forEach(s => s.style.width = `${slidePercent}%`);
+    slides.forEach(s => s.style.flex = `0 0 ${slidePercent}%`);
   
     /* 2) נקודות */
     let idx = 0;
