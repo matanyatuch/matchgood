@@ -92,15 +92,8 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 #carousel-track{display:flex; direction:ltr; transition:transform .6s ease;}
 
 /* שקופית יחידה */
-.carousel-slide{
-  flex:0 0 100%;          /* ← שקופית תופסת 100 % מהמעטפת */
-  width:100%;
-  height:16rem;           /* h-64 */
-  object-fit:contain;
-  object-position:center; /* מרכז את הלוגו */
-  border-radius:.75rem;
-  display:block;
-}
+.carousel-slide{ flex:0 0 100%; width:100%; height:16rem; object-fit:contain; }
+
 /* נקודות */
 #carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
 .carousel-dot{width:10px;height:10px;border-radius:9999px;background:#a1a1aa;opacity:.6;transition:.3s;cursor:pointer}
