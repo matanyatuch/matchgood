@@ -676,49 +676,34 @@ skipBtn.addEventListener("click", ()=>nextQuestion());
 backBtn.addEventListener("click", previousQuestion);
 </script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener('DOMContentLoaded',()=>{
+    const track=document.getElementById('carousel-track');
+    const slides=[...track.children];
+    const dotsBox=document.getElementById('carousel-dots');
+    const N=slides.length;
+    const pct=100/N;
+    track.style.width=`${N*100}%`;
+    slides.forEach(s=>s.style.flex=`0 0 ${pct}%`);
   
-    /* אלמנטים */
-    const track   = document.getElementById("carousel-track");
-    const slides  = Array.from(track.children);
-    const dotsBox = document.getElementById("carousel-dots");
-    const N       = slides.length;
-  
-    /* 1) Track = 100% × N  |  Slide = 100/N % */
-    track.style.width = `${N * 100}%`;
-    const slidePercent = 100 / N;                 // ≈ 14.285….
-    slides.forEach(s => s.style.flex = `0 0 ${slidePercent}%`);
-  
-    /* 2) נקודות */
-    let idx = 0;
-    slides.forEach((_, i) => {
-      const dot = Object.assign(document.createElement("div"), {
-        className: "carousel-dot" + (i ? "" : " active")
-      });
-      dot.onclick = () => { idx = i; update(); };
+    let idx=0;
+    slides.forEach((_,i)=>{
+      const dot=document.createElement('div');
+      dot.className='carousel-dot'+(i?'':' active');
+      dot.onclick=()=>{idx=i;update();};
       dotsBox.appendChild(dot);
     });
   
-    /* 3) פונקציית עדכון */
     function update(){
-      track.style.transform = `translateX(-${idx * slidePercent}%)`;
-      dotsBox.querySelectorAll(".carousel-dot")
-             .forEach((d,k)=> d.classList.toggle("active", k === idx));
+      // הזזה לכיוון ימין (RTL)
+      track.style.transform=`translateX(${idx*pct}%)`;
+      dotsBox.querySelectorAll('.carousel-dot').forEach((d,k)=>d.classList.toggle('active',k===idx));
     }
-    update();                        // ציור ראשוני
+    update();
+    setInterval(()=>{idx=(idx+1)%N;update();},10000);
   
-    /* 4) החלקה אוטומטית */
-    setInterval(() => {
-      idx = (idx + 1) % N;
-      update();
-    }, 10000);
-  
-    /* 5) הסתרה כשמתחיל השאלון */
-    document.getElementById("startQuizBtn")
-            .addEventListener("click", () =>
-              document.getElementById("amuta-carousel")
-                      .classList.add("hidden"));
-  
+    document.getElementById('startQuizBtn').addEventListener('click',()=>{
+      document.getElementById('amuta-carousel').classList.add('hidden');
+    });
   });
   </script>
   
