@@ -78,11 +78,11 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
     border-color:#60a5fa;           /* כחול בהיר ל-Dark */
   }
 }
-/* ── קרוסלה ────────────────────────── */
+/* קרוסלה – מעטפת */
 #amuta-carousel{
   max-width:32rem; margin-top:1.5rem; padding:1rem;
   border:4px solid #2563eb; border-radius:.75rem;
-  background:#fff; overflow:hidden; box-shadow:0 5px 15px rgb(0 0 0 / .15);
+  background:#fff; overflow:hidden;
 }
 @media (prefers-color-scheme:dark){
   #amuta-carousel{background:#1f2937; border-color:#60a5fa;}
@@ -91,8 +91,15 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 /* פס השקופיות */
 #carousel-track{display:flex; direction:ltr; transition:transform .6s ease;}
 
-/* שקופית יחידה */
-.carousel-slide{ flex:0 0 100%; width:100%; height:16rem; object-fit:contain; }
+/* שקופית (ה-img עצמה) */
+.carousel-slide{
+  flex-shrink:0;
+  height:16rem;
+  object-fit:contain;
+  object-position:center;
+  border-radius:.75rem;
+  display:block;
+}
 
 /* נקודות */
 #carousel-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
@@ -101,6 +108,7 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 @media (prefers-color-scheme:dark){
   .carousel-dot{background:#6b7280}.carousel-dot.active{background:#3b82f6}
 }
+
 
   </style>
 </head>
@@ -669,48 +677,49 @@ backBtn.addEventListener("click", previousQuestion);
 <script>
   document.addEventListener("DOMContentLoaded", () => {
   
-    /* ========= אלמנטים ========= */
+    /* אלמנטים */
     const track   = document.getElementById("carousel-track");
-    const slides  = Array.from(track.children);             // 7 שקופיות
+    const slides  = Array.from(track.children);
     const dotsBox = document.getElementById("carousel-dots");
     const N       = slides.length;
   
-    /* ========= 1) רוחב Track + שקופית ========= */
-    track.style.width = `${N * 100}%`;                      // פס ארוך פי N
-    slides.forEach(s => {                                   // כל שקופית = 100 %
-      s.style.width = "100%";
-    });
+    /* 1) Track = 100% × N  |  Slide = 100/N % */
+    track.style.width = `${N * 100}%`;
+    const slidePercent = 100 / N;                 // ≈ 14.285….
+    slides.forEach(s => s.style.width = `${slidePercent}%`);
   
-    /* ========= 2) יצירת נקודות ========= */
-    let idx = 0;                                            // שקופית פעילה
+    /* 2) נקודות */
+    let idx = 0;
     slides.forEach((_, i) => {
-      const dot = document.createElement("div");
-      dot.className = "carousel-dot" + (i === 0 ? " active" : "");
+      const dot = Object.assign(document.createElement("div"), {
+        className: "carousel-dot" + (i ? "" : " active")
+      });
       dot.onclick = () => { idx = i; update(); };
       dotsBox.appendChild(dot);
     });
   
-    /* ========= 3) פונקציית עדכון ========= */
+    /* 3) פונקציית עדכון */
     function update(){
-      track.style.transform = `translateX(-${idx * 100}%)`;
+      track.style.transform = `translateX(-${idx * slidePercent}%)`;
       dotsBox.querySelectorAll(".carousel-dot")
              .forEach((d,k)=> d.classList.toggle("active", k === idx));
     }
-    update();                                               // ציור ראשוני
+    update();                        // ציור ראשוני
   
-    /* ========= 4) החלקה אוטומטית ========= */
+    /* 4) החלקה אוטומטית */
     setInterval(() => {
       idx = (idx + 1) % N;
       update();
     }, 10000);
   
-    /* ========= 5) הסתרה בזמן השאלון ========= */
-    const startQuizBtn = document.getElementById("startQuizBtn");
-    startQuizBtn?.addEventListener("click", () => {
-      document.getElementById("amuta-carousel")?.classList.add("hidden");
-    });
+    /* 5) הסתרה כשמתחיל השאלון */
+    document.getElementById("startQuizBtn")
+            .addEventListener("click", () =>
+              document.getElementById("amuta-carousel")
+                      .classList.add("hidden"));
   
   });
-</script>
+  </script>
+  
 </body>
 </html>
