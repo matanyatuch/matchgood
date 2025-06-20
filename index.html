@@ -59,14 +59,27 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 .amuta-gallery.hidden{display:none}
 .amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe{max-width:100%;border-radius:.5rem;margin-bottom:.5rem;background:#FFF}
 .dark .amuta-gallery img,.dark .amuta-gallery video{background:#2D3748}
-#carousel-track {
-  display: flex;
+.carousel-slide {
+  flex-shrink: 0;
   width: 100%;
-  transition: transform 0.6s ease-in-out;
+  height: 16rem; /* h-64 */
+  object-fit: cover;
+  border-radius: 0.75rem;
 }
 
-.carousel-slide {
-  flex: 0 0 100%;
+/* עיגולים */
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background-color: #ccc;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+  background-color: #2563eb;
+  opacity: 1;
 }
 
   </style>
@@ -96,18 +109,20 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
       <button id="startQuizBtn" class="bg-blue-700 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-400 text-white px-8 py-3 rounded-lg transition-colors text-lg font-semibold"><i class="fas fa-play mr-2"></i> התחל שאלון</button>
     </div>
   </div>
-<!-- קרוסלת עמותות מעוצבת -->
+<!-- קרוסלת עמותות -->
 <div id="amuta-carousel" class="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 mt-6 border-4 border-blue-700 dark:border-blue-400 overflow-hidden">
-  <div id="carousel-track" class="flex transition-transform duration-700 ease-in-out">
-    <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" class="carousel-slide object-cover h-64 w-full rounded-xl" alt="לשמח בבתי חולים" />
-    <img src="https://www.mdais.org/media/1025/logojpg.png" class="carousel-slide object-cover h-64 w-full rounded-xl" alt="מד״א" />
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" class="carousel-slide object-cover h-64 w-full rounded-xl" alt="כבאות והצלה" />
-    <img src="https://www.patients-rights.org//webfiles/fck/image/headers/80b1ecbecd5a8429fb984c67813a51c3.jpg" class="carousel-slide object-cover h-64 w-full rounded-xl" alt="חברים לרפואה" />
-    <img src="https://or-michael.co.il/images/or_michael_heb.png" class="carousel-slide object-cover h-64 w-full rounded-xl" alt="אור מיכאל" />
-    <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" class="carousel-slide object-cover h-64 w-full rounded-xl" alt="משען למרפא" />
-    <img src="https://l-yad.org/wp-content/uploads/2023/11/DSC00838-scaled.jpg" class="carousel-slide object-cover h-64 w-full rounded-xl" alt="להושיט יד" />
+  <div id="carousel-track" class="flex">
+    <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" class="carousel-slide" alt="לשמח בבתי חולים" />
+    <img src="https://www.mdais.org/media/1025/logojpg.png" class="carousel-slide" alt="מד״א" />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" class="carousel-slide" alt="כבאות והצלה" />
+    <img src="https://www.patients-rights.org//webfiles/fck/image/headers/80b1ecbecd5a8429fb984c67813a51c3.jpg" class="carousel-slide" alt="חברים לרפואה" />
+    <img src="https://or-michael.co.il/images/or_michael_heb.png" class="carousel-slide" alt="אור מיכאל" />
+    <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" class="carousel-slide" alt="משען למרפא" />
+    <img src="https://l-yad.org/wp-content/uploads/2023/11/DSC00838-scaled.jpg" class="carousel-slide" alt="להושיט יד" />
   </div>
+  <div id="carousel-dots" class="flex justify-center mt-4 gap-2"></div>
 </div>
+
 
 
 
@@ -626,15 +641,42 @@ backBtn.addEventListener("click", previousQuestion);
 <script>
   let carouselIndex = 0;
   const track = document.getElementById("carousel-track");
-  const slides = track.children;
-  const totalImages = slides.length;
+  const slides = Array.from(track.children);
+  const dotsContainer = document.getElementById("carousel-dots");
   
-  function advanceCarousel() {
-    carouselIndex = (carouselIndex + 1) % totalImages;
-    track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+  // עדכון רוחב לפי מספר התמונות
+  track.style.width = `${slides.length * 100}%`;
+  slides.forEach(slide => {
+    slide.style.width = `${100 / slides.length}%`;
+  });
+  
+  // יצירת העיגולים
+  slides.forEach((_, i) => {
+    const dot = document.createElement("div");
+    dot.className = "carousel-dot" + (i === 0 ? " active" : "");
+    dot.addEventListener("click", () => {
+      carouselIndex = i;
+      updateCarousel();
+    });
+    dotsContainer.appendChild(dot);
+  });
+  
+  function updateCarousel() {
+    track.style.transform = `translateX(-${carouselIndex * (100 / slides.length)}%)`;
+  
+    // עדכון עיגולים
+    const allDots = dotsContainer.querySelectorAll(".carousel-dot");
+    allDots.forEach((dot, i) =>
+      dot.classList.toggle("active", i === carouselIndex)
+    );
   }
   
-  setInterval(advanceCarousel, 10000); // כל 10 שניות
+  function advanceCarousel() {
+    carouselIndex = (carouselIndex + 1) % slides.length;
+    updateCarousel();
+  }
+  
+  setInterval(advanceCarousel, 10000);
   </script>
   
   
