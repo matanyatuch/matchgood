@@ -68,11 +68,13 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 
 /* SLIDE */
 .carousel-slide{
-  flex:0 0 100%;                 /* כל שקופית = רוחב מלא */
-  height:16rem;                  /* h-64 */
-  object-fit:contain;            /* שלא יחתוך לוגו */
+  flex:0 0 100%;    /* ⬅ 100% רוחב, לא 14% */
+  height:16rem;     /* h-64 */
+  object-fit:contain;
   border-radius:.75rem;
+  display:block;
 }
+
 
 /* DOTS */
 .carousel-dot{
@@ -643,31 +645,30 @@ skipBtn.addEventListener("click", ()=>nextQuestion());
 backBtn.addEventListener("click", previousQuestion);
 </script>
 <script>
-  const track         = document.getElementById("carousel-track");
-  const slides        = Array.from(track.children);
-  const dotsContainer = document.getElementById("carousel-dots");
+  const track  = document.getElementById("carousel-track");
+  const slides = Array.from(track.children);
+  const dots   = document.getElementById("carousel-dots");
   
-  let index = 0;
+  let i = 0;
   
-  /* —— יצירת נקודות —— */
-  slides.forEach((_, i)=>{
-    const d = document.createElement("div");
-    d.className = "carousel-dot" + (i===0?" active":"");
-    d.addEventListener("click", ()=>{ index=i; update(); });
-    dotsContainer.appendChild(d);
+  /* track = 100% × #slides */
+  track.style.width = `${slides.length * 100}%`;
+  
+  /* בונים נקודות - ללא שינוי */
+  slides.forEach((_, idx) => {
+    const dot = document.createElement("div");
+    dot.className = "carousel-dot" + (idx===0?" active":"");
+    dot.onclick   = ()=>{ i=idx; update(); };
+    dots.appendChild(dot);
   });
   
-  /* —— עדכון תצוגה —— */
   function update(){
-    const offset = (index * 100) / slides.length;        // % יחסי
-    track.style.transform = `translateX(-${offset}%)`;
-  
-    dotsContainer.querySelectorAll(".carousel-dot")
-                 .forEach((dot,i)=>dot.classList.toggle("active",i===index));
+    track.style.transform = `translateX(-${i*100}%)`;   // ⬅ index*100%
+    dots.querySelectorAll(".carousel-dot").forEach((d,k)=>
+        d.classList.toggle("active",k===i));
   }
   
-  /* —— החלקה אוטומטית —— */
-  setInterval(()=>{ index = (index+1)%slides.length; update(); }, 10000);
+  setInterval(()=>{ i=(i+1)%slides.length; update(); },10000);
   </script>
   
   
