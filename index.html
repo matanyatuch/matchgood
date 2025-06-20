@@ -59,15 +59,19 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 .amuta-gallery.hidden{display:none}
 .amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe{max-width:100%;border-radius:.5rem;margin-bottom:.5rem;background:#FFF}
 .dark .amuta-gallery img,.dark .amuta-gallery video{background:#2D3748}
+#carousel-track {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
 .carousel-slide {
   flex-shrink: 0;
   width: 100%;
-  height: 16rem; /* h-64 */
-  object-fit: cover;
+  height: 16rem; /* tailwind: h-64 */
+  object-fit: contain; /* או cover אם רוצים למלא */
   border-radius: 0.75rem;
 }
 
-/* עיגולים */
 .carousel-dot {
   width: 10px;
   height: 10px;
@@ -81,7 +85,6 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
   background-color: #2563eb;
   opacity: 1;
 }
-
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-[Assistant]">
@@ -639,18 +642,19 @@ skipBtn.addEventListener("click", ()=>nextQuestion());
 backBtn.addEventListener("click", previousQuestion);
 </script>
 <script>
-  let carouselIndex = 0;
   const track = document.getElementById("carousel-track");
   const slides = Array.from(track.children);
   const dotsContainer = document.getElementById("carousel-dots");
   
-  // עדכון רוחב לפי מספר התמונות
+  let carouselIndex = 0;
+  
+  // הצבת רוחב track לפי מספר התמונות
   track.style.width = `${slides.length * 100}%`;
   slides.forEach(slide => {
     slide.style.width = `${100 / slides.length}%`;
   });
   
-  // יצירת העיגולים
+  // יצירת עיגולים
   slides.forEach((_, i) => {
     const dot = document.createElement("div");
     dot.className = "carousel-dot" + (i === 0 ? " active" : "");
@@ -661,23 +665,23 @@ backBtn.addEventListener("click", previousQuestion);
     dotsContainer.appendChild(dot);
   });
   
+  // עדכון תצוגה
   function updateCarousel() {
-    track.style.transform = `translateX(-${carouselIndex * (100 / slides.length)}%)`;
+    const percentage = carouselIndex * (100 / slides.length);
+    track.style.transform = `translateX(-${percentage}%)`;
   
-    // עדכון עיגולים
-    const allDots = dotsContainer.querySelectorAll(".carousel-dot");
-    allDots.forEach((dot, i) =>
+    dotsContainer.querySelectorAll(".carousel-dot").forEach((dot, i) =>
       dot.classList.toggle("active", i === carouselIndex)
     );
   }
   
-  function advanceCarousel() {
+  // מעבר אוטומטי כל 10 שניות
+  setInterval(() => {
     carouselIndex = (carouselIndex + 1) % slides.length;
     updateCarousel();
-  }
-  
-  setInterval(advanceCarousel, 10000);
+  }, 10000);
   </script>
+  
   
   
 </body>
