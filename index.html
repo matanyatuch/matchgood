@@ -59,34 +59,28 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
 .amuta-gallery.hidden{display:none}
 .amuta-gallery img,.amuta-gallery video,.amuta-gallery iframe{max-width:100%;border-radius:.5rem;margin-bottom:.5rem;background:#FFF}
 .dark .amuta-gallery img,.dark .amuta-gallery video{background:#2D3748}
-#carousel-track {
-  display: flex;
-  direction: ltr; 
-  transition: transform 0.6s ease-in-out;
+/* TRACK */
+#carousel-track{
+  display:flex;
+  direction:ltr;                 /* מכריח החלקה שמאלה בממשק RTL */
+  transition:transform .6s ease-in-out;
 }
 
-.carousel-slide {
-  flex-shrink: 0;
-  width: 100%;
-  height: 16rem; /* או מה שאתה רוצה */
-  object-fit: contain; /* cover אם אתה רוצה שימלא */
-  border-radius: 0.75rem;
-  display: block;
+/* SLIDE */
+.carousel-slide{
+  flex:0 0 100%;                 /* כל שקופית = רוחב מלא */
+  height:16rem;                  /* h-64 */
+  object-fit:contain;            /* שלא יחתוך לוגו */
+  border-radius:.75rem;
 }
 
-.carousel-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 9999px;
-  background-color: #ccc;
-  opacity: 0.6;
-  transition: all 0.3s ease;
+/* DOTS */
+.carousel-dot{
+  width:10px;height:10px;border-radius:9999px;
+  background:#bbb;opacity:.6;transition:.3s;
 }
+.carousel-dot.active{background:#2563eb;opacity:1;}
 
-.carousel-dot.active {
-  background-color: #2563eb;
-  opacity: 1;
-}
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 md:p-6 bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-[Assistant]">
@@ -115,16 +109,21 @@ h2{font-size:clamp(1.2rem,4vw,1.5rem)}
     </div>
   </div>
 <!-- קרוסלת עמותות -->
-<div id="amuta-carousel" class="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 mt-6 border-4 border-blue-700 dark:border-blue-400 overflow-hidden">
+<div id="amuta-carousel"
+     class="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg rounded-xl p-4 mt-6
+            border-4 border-blue-700 dark:border-blue-400 overflow-hidden">
+
   <div id="carousel-track" class="flex">
-    <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" class="carousel-slide" alt="לשמח בבתי חולים" />
-    <img src="https://www.mdais.org/media/1025/logojpg.png" class="carousel-slide" alt="מד״א" />
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" class="carousel-slide" alt="כבאות והצלה" />
-    <img src="https://www.patients-rights.org//webfiles/fck/image/headers/80b1ecbecd5a8429fb984c67813a51c3.jpg" class="carousel-slide" alt="חברים לרפואה" />
-    <img src="https://or-michael.co.il/images/or_michael_heb.png" class="carousel-slide" alt="אור מיכאל" />
-    <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg" class="carousel-slide" alt="משען למרפא" />
-    <img src="https://l-yad.org/wp-content/uploads/2023/11/DSC00838-scaled.jpg" class="carousel-slide" alt="להושיט יד" />
+    <img src="https://hitnadvut.kfar-saba.muni.il/wp-content/uploads/2020/12/%D7%99%D7%93%D7%99%D7%93%D7%99%D7%9D-%D7%9E%D7%A1%D7%9E%D7%9B%D7%99-%D7%99%D7%A1%D7%95%D7%93-%D7%9C%D7%95%D7%92%D7%95-%D7%A1%D7%99%D7%95%D7%A2-%D7%91%D7%93%D7%A8%D7%9B%D7%99%D7%9D-%D7%A9%D7%97%D7%95%D7%A8-2019-002.jpg" alt="ידידים"                 class="carousel-slide">
+    <img src="https://yt3.googleusercontent.com/ytc/AIdro_maqfIGvladPDhPnOhnjKPO9GDra6La1SLnvAr3IDF8iw=s900-c-k-c0x00ffffff-no-rj" alt="לשמח בבתי חולים"  class="carousel-slide">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/FireDepIsrael.svg/250px-FireDepIsrael.svg.png" alt="כבאות והצלה"        class="carousel-slide">
+    <img src="https://www.mishan-lamarpe.org.il/wp-content/uploads/2015/01/%D7%9E%D7%A9%D7%A2%D7%9F-%D7%9C%D7%9E%D7%A8%D7%A4%D7%90.jpg"        alt="משען למרפא"         class="carousel-slide">
+    <img src="https://www.patients-rights.org//webfiles/fck/image/headers/80b1ecbecd5a8429fb984c67813a51c3.jpg"                            alt="חברים לרפואה"       class="carousel-slide">
+    <img src="https://www.mdais.org/media/1025/logojpg.png"                                                     alt="מד״א – מגן דוד אדום" class="carousel-slide">
+    <img src="https://or-michael.co.il/images/or_michael_heb.png"                                              alt="אור מיכאל"           class="carousel-slide">
   </div>
+
+  <!-- נקודות ניווט -->
   <div id="carousel-dots" class="flex justify-center mt-4 gap-2"></div>
 </div>
 
@@ -644,44 +643,31 @@ skipBtn.addEventListener("click", ()=>nextQuestion());
 backBtn.addEventListener("click", previousQuestion);
 </script>
 <script>
-  const track = document.getElementById("carousel-track");
-  const slides = Array.from(track.children);
+  const track         = document.getElementById("carousel-track");
+  const slides        = Array.from(track.children);
   const dotsContainer = document.getElementById("carousel-dots");
   
-  let carouselIndex = 0;
+  let index = 0;
   
-  // הצבת רוחב track לפי מספר התמונות
-  track.style.width = `${slides.length * 100}%`;
-  slides.forEach(slide => {
-    slide.style.width = `${100 / slides.length}%`;
+  /* —— יצירת נקודות —— */
+  slides.forEach((_, i)=>{
+    const d = document.createElement("div");
+    d.className = "carousel-dot" + (i===0?" active":"");
+    d.addEventListener("click", ()=>{ index=i; update(); });
+    dotsContainer.appendChild(d);
   });
   
-  // יצירת עיגולים
-  slides.forEach((_, i) => {
-    const dot = document.createElement("div");
-    dot.className = "carousel-dot" + (i === 0 ? " active" : "");
-    dot.addEventListener("click", () => {
-      carouselIndex = i;
-      updateCarousel();
-    });
-    dotsContainer.appendChild(dot);
-  });
+  /* —— עדכון תצוגה —— */
+  function update(){
+    const offset = (index * 100) / slides.length;        // % יחסי
+    track.style.transform = `translateX(-${offset}%)`;
   
-  // עדכון תצוגה
-  function updateCarousel() {
-    const percentage = carouselIndex * (100 / slides.length);
-    track.style.transform = `translateX(-${percentage}%)`;
-  
-    dotsContainer.querySelectorAll(".carousel-dot").forEach((dot, i) =>
-      dot.classList.toggle("active", i === carouselIndex)
-    );
+    dotsContainer.querySelectorAll(".carousel-dot")
+                 .forEach((dot,i)=>dot.classList.toggle("active",i===index));
   }
   
-  // מעבר אוטומטי כל 10 שניות
-  setInterval(() => {
-    carouselIndex = (carouselIndex + 1) % slides.length;
-    updateCarousel();
-  }, 10000);
+  /* —— החלקה אוטומטית —— */
+  setInterval(()=>{ index = (index+1)%slides.length; update(); }, 10000);
   </script>
   
   
